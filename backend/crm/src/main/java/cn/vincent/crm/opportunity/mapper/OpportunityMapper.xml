@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.vincent.crm.opportunity.mapper.OpportunityMapper">
+
+    <!-- 结果映射 -->
+    <resultMap id="BaseResultMap" type="cn.vincent.crm.opportunity.domain.Opportunity">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="customer_id" property="customerId"/>
+        <result column="contact_id" property="contactId"/>
+        <result column="owner" property="owner"/>
+        <result column="stage" property="stage"/>
+        <result column="last_stage" property="lastStage"/>
+        <result column="amount" property="amount"/>
+        <result column="expected_close_time" property="expectedCloseTime"/>
+        <result column="remark" property="remark"/>
+        <result column="pos" property="pos"/>
+        <result column="organization_id" property="organizationId"/>
+        <result column="follower" property="follower"/>
+        <result column="follow_time" property="followTime"/>
+        <result column="create_user" property="createUser"/>
+        <result column="update_user" property="updateUser"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+    </resultMap>
+
+    <!-- 基础列 -->
+    <sql id="Base_Column_List">
+        id, name, customer_id, contact_id, owner, stage, last_stage, amount,
+        expected_close_time, remark, pos, organization_id, follower, follow_time,
+        create_user, update_user, create_time, update_time
+    </sql>
+
+    <!-- 根据主键查询 -->
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM opportunity
+        WHERE id = #{id}
+    </select>
+
+    <!-- 根据主键批量查询 -->
+    <select id="selectByIds" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM opportunity
+        WHERE id IN
+        <foreach collection="list" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </select>
+
+    <!-- 新增 -->
+    <insert id="insert" parameterType="cn.vincent.crm.opportunity.domain.Opportunity">
+        INSERT INTO opportunity (id, name, customer_id, contact_id, owner, stage, last_stage,
+                                amount, expected_close_time, remark, pos, organization_id,
+                                follower, follow_time, create_user, update_user, create_time, update_time)
+        VALUES (#{id}, #{name}, #{customerId}, #{contactId}, #{owner}, #{stage}, #{lastStage},
+                #{amount}, #{expectedCloseTime}, #{remark}, #{pos}, #{organizationId},
+                #{follower}, #{followTime}, #{createUser}, #{updateUser}, #{createTime}, #{updateTime})
+    </insert>
+
+    <!-- 批量新增 -->
+    <insert id="batchInsert" parameterType="java.util.List">
+        INSERT INTO opportunity (id, name, customer_id, contact_id, owner, stage, last_stage,
+                                amount, expected_close_time, remark, pos, organization_id,
+                                follower, follow_time, create_user, update_user, create_time, update_time)
+        VALUES
+        <foreach collection="list" item="item" separator=",">
+            (#{item.id}, #{item.name}, #{item.customerId}, #{item.contactId}, #{item.owner},
+             #{item.stage}, #{item.lastStage}, #{item.amount}, #{item.expectedCloseTime},
+             #{item.remark}, #{item.pos}, #{item.organizationId},
+             #{item.follower}, #{item.followTime}, #{item.createUser}, #{item.updateUser},
+             #{item.createTime}, #{item.updateTime})
+        </foreach>
+    </insert>
+
+    <!-- 更新 -->
+    <update id="update" parameterType="cn.vincent.crm.opportunity.domain.Opportunity">
+        UPDATE opportunity
+        <set>
+            <if test="name != null">name = #{name},</if>
+            <if test="customerId != null">customer_id = #{customerId},</if>
+            <if test="contactId != null">contact_id = #{contactId},</if>
+            <if test="owner != null">owner = #{owner},</if>
+            <if test="stage != null">stage = #{stage},</if>
+            <if test="lastStage != null">last_stage = #{lastStage},</if>
+            <if test="amount != null">amount = #{amount},</if>
+            <if test="expectedCloseTime != null">expected_close_time = #{expectedCloseTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="pos != null">pos = #{pos},</if>
+            <if test="organizationId != null">organization_id = #{organizationId},</if>
+            <if test="follower != null">follower = #{follower},</if>
+            <if test="followTime != null">follow_time = #{followTime},</if>
+            <if test="updateUser != null">update_user = #{updateUser},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <!-- 根据主键批量删除 -->
+    <delete id="deleteByIds" parameterType="java.util.List">
+        DELETE FROM opportunity
+        WHERE id IN
+        <foreach collection="list" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.vincent.crm.opportunity.mapper.ExtOpportunityMapper">
+
+    <!-- 根据组织 ID 和筛选条件查询商机列表 -->
+    <select id="selectByCondition" resultType="cn.vincent.crm.opportunity.domain.Opportunity">
+        SELECT id, name, customer_id, contact_id, owner, stage, last_stage, amount,
+               expected_close_time, remark, pos, organization_id, follower, follow_time,
+               create_user, update_user, create_time, update_time
+        FROM opportunity
+        WHERE organization_id = #{orgId}
+        <if test="ownerIds != null and ownerIds.size() > 0">
+            AND owner IN
+            <foreach collection="ownerIds" item="ownerId" open="(" separator="," close=")">
+                #{ownerId}
+            </foreach>
+        </if>
+        <if test="stage != null and stage != ''">
+            AND stage = #{stage}
+        </if>
+        ORDER BY pos ASC, create_time DESC
+    </select>
+
+</mapper>

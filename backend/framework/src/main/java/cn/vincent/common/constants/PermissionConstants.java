@@ -57,4 +57,16 @@ public class PermissionConstants {
     public static final String CUSTOMER_POOL_READ = "CUSTOMER_POOL_READ";
     public static final String CUSTOMER_POOL_CLAIM = "CUSTOMER_POOL_CLAIM";
     public static final String CUSTOMER_POOL_ASSIGN = "CUSTOMER_POOL_ASSIGN";
+
+    // ========== 商机管理 ==========
+    public static final String OPPORTUNITY_MANAGEMENT_READ = "OPPORTUNITY_MANAGEMENT_READ";
+    public static final String OPPORTUNITY_MANAGEMENT_ADD = "OPPORTUNITY_MANAGEMENT_ADD";
+    public static final String OPPORTUNITY_MANAGEMENT_UPDATE = "OPPORTUNITY_MANAGEMENT_UPDATE";
+    public static final String OPPORTUNITY_MANAGEMENT_DELETE = "OPPORTUNITY_MANAGEMENT_DELETE";
+
+    // ========== 产品管理 ==========
+    public static final String PRODUCT_MANAGEMENT_READ = "PRODUCT_MANAGEMENT_READ";
+    public static final String PRODUCT_MANAGEMENT_ADD = "PRODUCT_MANAGEMENT_ADD";
+    public static final String PRODUCT_MANAGEMENT_UPDATE = "PRODUCT_MANAGEMENT_UPDATE";
+    public static final String PRODUCT_MANAGEMENT_DELETE = "PRODUCT_MANAGEMENT_DELETE";
 }

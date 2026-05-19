@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.vincent.crm.product.mapper.ExtProductMapper">
+
+    <!-- 根据编码查询产品（编码唯一性校验） -->
+    <select id="selectByCode" resultType="cn.vincent.crm.product.domain.Product">
+        SELECT id, name, code, category, price, unit, description, enable, sort,
+               organization_id, create_user, update_user, create_time, update_time
+        FROM product
+        WHERE code = #{code}
+          AND organization_id = #{organizationId}
+    </select>
+
+    <!-- 产品分页列表查询（关键词搜索 + 分类/状态过滤） -->
+    <select id="selectProductPage" resultType="cn.vincent.crm.product.domain.Product">
+        SELECT id, name, code, category, price, unit, description, enable, sort,
+               organization_id, create_user, update_user, create_time, update_time
+        FROM product
+        WHERE organization_id = #{organizationId}
+        <if test="keyword != null and keyword != ''">
+            AND (name LIKE CONCAT('%', #{keyword}, '%')
+                 OR code LIKE CONCAT('%', #{keyword}, '%'))
+        </if>
+        <if test="category != null and category != ''">
+            AND category = #{category}
+        </if>
+        <if test="enable != null">
+            AND enable = #{enable}
+        </if>
+        ORDER BY sort ASC, create_time DESC
+    </select>
+
+</mapper>
