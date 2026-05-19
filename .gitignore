@@ -67,6 +67,9 @@ docker-compose.override.yml
 .mysql_data/
 .redis_data/
 
+# 生产环境变量（包含敏感信息）
+.env
+
 # ========================
 # 通用
 # ========================
