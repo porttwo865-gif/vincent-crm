@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.vincent.crm.workbench.mapper.ExtWorkbenchMapper">
+
+    <!-- ========== 业绩概览 ========== -->
+
+    <!-- 统计我的线索总数 -->
+    <select id="countClueByOwner" resultType="java.lang.Long">
+        SELECT COUNT(*)
+        FROM clue
+        WHERE organization_id = #{orgId}
+          AND owner = #{ownerId}
+          AND in_shared_pool = 0
+    </select>
+
+    <!-- 统计我的客户总数 -->
+    <select id="countCustomerByOwner" resultType="java.lang.Long">
+        SELECT COUNT(*)
+        FROM customer
+        WHERE organization_id = #{orgId}
+          AND owner = #{ownerId}
+          AND in_shared_pool = 0
+    </select>
+
+    <!-- 统计我的商机总数 -->
+    <select id="countOpportunityByOwner" resultType="java.lang.Long">
+        SELECT COUNT(*)
+        FROM opportunity
+        WHERE organization_id = #{orgId}
+          AND owner = #{ownerId}
+    </select>
+
+    <!-- 统计我的商机总金额 -->
+    <select id="sumOpportunityAmountByOwner" resultType="java.math.BigDecimal">
+        SELECT COALESCE(SUM(amount), 0)
+        FROM opportunity
+        WHERE organization_id = #{orgId}
+          AND owner = #{ownerId}
+    </select>
+
+    <!-- 统计本月新签合同数 -->
+    <select id="countContractThisMonthByOwner" resultType="java.lang.Long">
+        SELECT COUNT(*)
+        FROM crm_contract
+        WHERE organization_id = #{orgId}
+          AND owner = #{ownerId}
+          AND signed_date &gt;= #{monthStart}
+          AND signed_date &lt;= #{monthEnd}
+    </select>
+
+    <!-- 统计本月合同总金额 -->
+    <select id="sumContractAmountThisMonthByOwner" resultType="java.math.BigDecimal">
+        SELECT COALESCE(SUM(amount), 0)
+        FROM crm_contract
+        WHERE organization_id = #{orgId}
+          AND owner = #{ownerId}
+          AND signed_date &gt;= #{monthStart}
+          AND signed_date &lt;= #{monthEnd}
+    </select>
+
+    <!-- 统计本月订单数 -->
+    <select id="countOrderThisMonthByOwner" resultType="java.lang.Long">
+        SELECT COUNT(*)
+        FROM crm_order
+        WHERE organization_id = #{orgId}
+          AND create_user = #{ownerId}
+          AND create_time &gt;= #{monthStart}
+          AND create_time &lt;= #{monthEnd}
+    </select>
+
+    <!-- 统计本月订单总金额 -->
+    <select id="sumOrderAmountThisMonthByOwner" resultType="java.math.BigDecimal">
+        SELECT COALESCE(SUM(total_amount), 0)
+        FROM crm_order
+        WHERE organization_id = #{orgId}
+          AND create_user = #{ownerId}
+          AND create_time &gt;= #{monthStart}
+          AND create_time &lt;= #{monthEnd}
+    </select>
+
+    <!-- ========== 待办事项 ========== -->
+
+    <!-- 统计待跟进计划数量 -->
+    <select id="countPendingFollowPlans" resultType="java.lang.Long">
+        SELECT COUNT(*)
+        FROM crm_follow_plan
+        WHERE organization_id = #{orgId}
+          AND owner = #{ownerId}
+          AND status = 'pending'
+    </select>
+
+    <!-- 统计待我审批数量 -->
+    <select id="countPendingApprovals" resultType="java.lang.Long">
+        SELECT COUNT(DISTINCT i.id)
+        FROM crm_approval_instance i
+        INNER JOIN crm_approval_node_record r ON i.id = r.instance_id
+        WHERE r.approver_id = #{approverId}
+          AND r.status = 'pending'
+          AND i.status = 'pending'
+          AND i.organization_id = #{orgId}
+    </select>
+
+    <!-- 统计即将到期合同数量（30天内） -->
+    <select id="countExpiringContracts" resultType="java.lang.Long">
+        SELECT COUNT(*)
+        FROM crm_contract
+        WHERE organization_id = #{orgId}
+          AND owner = #{ownerId}
+          AND end_date &gt;= #{now}
+          AND end_date &lt;= #{expireTime}
+    </select>
+
+    <!-- 统计逾期回款计划数量 -->
+    <select id="countOverduePaymentPlans" resultType="java.lang.Long">
+        SELECT COUNT(*)
+        FROM crm_payment_plan
+        WHERE expected_date &lt; #{now}
+          AND status = 'pending'
+          AND EXISTS (
+              SELECT 1 FROM crm_contract c
+              WHERE c.id = crm_payment_plan.contract_id
+                AND c.organization_id = #{orgId}
+                AND c.owner = #{ownerId}
+          )
+    </select>
+
+    <!-- ========== 最近动态 ========== -->
+
+    <!-- 查询最近跟进记录 -->
+    <select id="selectRecentFollowRecords" resultType="cn.vincent.crm.workbench.dto.response.WorkbenchRecentResponse">
+        SELECT biz_type AS bizType,
+               biz_id AS bizId,
+               content AS bizName,
+               'followed' AS action,
+               create_time AS operateTime,
+               create_user AS operatorName
+        FROM crm_follow_record
+        WHERE organization_id = #{orgId}
+          AND create_user = #{userId}
+          AND create_time &gt;= #{sevenDaysAgo}
+        ORDER BY create_time DESC
+        LIMIT #{limit}
+    </select>
+
+</mapper>

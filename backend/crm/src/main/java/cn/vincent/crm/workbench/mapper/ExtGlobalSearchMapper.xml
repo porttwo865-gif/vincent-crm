@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.vincent.crm.workbench.mapper.ExtGlobalSearchMapper">
+
+    <!-- 搜索线索 -->
+    <select id="searchClues" resultType="cn.vincent.crm.workbench.dto.response.GlobalSearchClueItem">
+        SELECT id, name, phone, owner
+        FROM clue
+        WHERE organization_id = #{orgId}
+          AND in_shared_pool = 0
+        <if test="ownerIds != null and ownerIds.size() > 0">
+            AND owner IN
+            <foreach collection="ownerIds" item="ownerId" open="(" separator="," close=")">
+                #{ownerId}
+            </foreach>
+        </if>
+          AND (name LIKE CONCAT('%', #{keyword}, '%')
+               OR phone LIKE CONCAT('%', #{keyword}, '%'))
+        ORDER BY create_time DESC
+        LIMIT #{limit}
+    </select>
+
+    <!-- 搜索客户 -->
+    <select id="searchCustomers" resultType="cn.vincent.crm.workbench.dto.response.GlobalSearchCustomerItem">
+        SELECT c.id, c.name, c.owner, MIN(cc.phone) AS phone
+        FROM customer c
+        LEFT JOIN customer_contact cc ON c.id = cc.customer_id
+        WHERE c.organization_id = #{orgId}
+          AND c.in_shared_pool = 0
+        <if test="ownerIds != null and ownerIds.size() > 0">
+            AND c.owner IN
+            <foreach collection="ownerIds" item="ownerId" open="(" separator="," close=")">
+                #{ownerId}
+            </foreach>
+        </if>
+          AND (c.name LIKE CONCAT('%', #{keyword}, '%')
+               OR cc.phone LIKE CONCAT('%', #{keyword}, '%'))
+        GROUP BY c.id, c.name, c.owner
+        ORDER BY c.create_time DESC
+        LIMIT #{limit}
+    </select>
+
+    <!-- 搜索商机 -->
+    <select id="searchOpportunities" resultType="cn.vincent.crm.workbench.dto.response.GlobalSearchOpportunityItem">
+        SELECT o.id, o.name, c.name AS customerName, o.amount, o.stage
+        FROM opportunity o
+        LEFT JOIN customer c ON o.customer_id = c.id
+        WHERE o.organization_id = #{orgId}
+        <if test="ownerIds != null and ownerIds.size() > 0">
+            AND o.owner IN
+            <foreach collection="ownerIds" item="ownerId" open="(" separator="," close=")">
+                #{ownerId}
+            </foreach>
+        </if>
+          AND (o.name LIKE CONCAT('%', #{keyword}, '%')
+               OR c.name LIKE CONCAT('%', #{keyword}, '%'))
+        ORDER BY o.create_time DESC
+        LIMIT #{limit}
+    </select>
+
+    <!-- 搜索合同 -->
+    <select id="searchContracts" resultType="cn.vincent.crm.workbench.dto.response.GlobalSearchContractItem">
+        SELECT ct.id, ct.name, c.name AS customerName, ct.amount, ct.status
+        FROM crm_contract ct
+        LEFT JOIN customer c ON ct.customer_id = c.id
+        WHERE ct.organization_id = #{orgId}
+        <if test="ownerIds != null and ownerIds.size() > 0">
+            AND ct.owner IN
+            <foreach collection="ownerIds" item="ownerId" open="(" separator="," close=")">
+                #{ownerId}
+            </foreach>
+        </if>
+          AND (ct.name LIKE CONCAT('%', #{keyword}, '%')
+               OR c.name LIKE CONCAT('%', #{keyword}, '%'))
+        ORDER BY ct.create_time DESC
+        LIMIT #{limit}
+    </select>
+
+    <!-- 搜索订单 -->
+    <select id="searchOrders" resultType="cn.vincent.crm.workbench.dto.response.GlobalSearchOrderItem">
+        SELECT o.id, o.order_no AS orderNo, c.name AS customerName, o.total_amount AS totalAmount, o.status
+        FROM crm_order o
+        LEFT JOIN customer c ON o.customer_id = c.id
+        WHERE o.organization_id = #{orgId}
+          AND (o.order_no LIKE CONCAT('%', #{keyword}, '%')
+               OR c.name LIKE CONCAT('%', #{keyword}, '%'))
+        ORDER BY o.create_time DESC
+        LIMIT #{limit}
+    </select>
+
+</mapper>

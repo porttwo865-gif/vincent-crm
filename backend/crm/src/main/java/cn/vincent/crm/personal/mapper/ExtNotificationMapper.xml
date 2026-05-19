@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.vincent.crm.personal.mapper.ExtNotificationMapper">
+
+    <!-- 根据用户 ID 和通知类型查询通知列表（按创建时间倒序） -->
+    <select id="selectByUserIdAndType" resultType="cn.vincent.crm.personal.domain.Notification">
+        SELECT id, user_id, title, content, type, biz_type, biz_id, read_status,
+               create_user, update_user, create_time, update_time
+        FROM crm_notification
+        <where>
+            user_id = #{userId}
+            <if test="type != null and type != ''">
+                AND type = #{type}
+            </if>
+        </where>
+        ORDER BY create_time DESC
+    </select>
+
+    <!-- 统计指定用户未读通知数量 -->
+    <select id="countUnreadByUserId" resultType="long">
+        SELECT COUNT(*)
+        FROM crm_notification
+        WHERE user_id = #{userId}
+          AND read_status = 'unread'
+    </select>
+
+    <!-- 批量标记通知为已读（限制只能操作当前用户的通知） -->
+    <update id="batchMarkRead">
+        UPDATE crm_notification
+        SET read_status = 'read'
+        WHERE user_id = #{userId}
+          AND id IN
+        <foreach collection="ids" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </update>
+
+</mapper>

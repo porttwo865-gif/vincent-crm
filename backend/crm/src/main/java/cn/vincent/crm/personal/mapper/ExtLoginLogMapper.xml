@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.vincent.crm.personal.mapper.ExtLoginLogMapper">
+
+    <!-- 根据用户 ID 查询登录日志列表（按登录时间倒序） -->
+    <select id="selectByUserId" resultType="cn.vincent.crm.personal.domain.LoginLog">
+        SELECT id, user_id, username, login_time, ip, user_agent, status,
+               create_user, update_user, create_time, update_time
+        FROM crm_login_log
+        WHERE user_id = #{userId}
+        ORDER BY login_time DESC
+    </select>
+
+</mapper>
