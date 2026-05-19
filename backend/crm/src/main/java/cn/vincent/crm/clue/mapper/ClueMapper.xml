@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.vincent.crm.clue.mapper.ClueMapper">
+
+    <!-- 结果映射 -->
+    <resultMap id="BaseResultMap" type="cn.vincent.crm.clue.domain.Clue">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="owner" property="owner"/>
+        <result column="stage" property="stage"/>
+        <result column="last_stage" property="lastStage"/>
+        <result column="contact" property="contact"/>
+        <result column="phone" property="phone"/>
+        <result column="products" property="products"/>
+        <result column="organization_id" property="organizationId"/>
+        <result column="collection_time" property="collectionTime"/>
+        <result column="in_shared_pool" property="inSharedPool"/>
+        <result column="transition_type" property="transitionType"/>
+        <result column="transition_id" property="transitionId"/>
+        <result column="follower" property="follower"/>
+        <result column="follow_time" property="followTime"/>
+        <result column="pool_id" property="poolId"/>
+        <result column="reason_id" property="reasonId"/>
+        <result column="create_user" property="createUser"/>
+        <result column="update_user" property="updateUser"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+    </resultMap>
+
+    <!-- 基础列 -->
+    <sql id="Base_Column_List">
+        id, name, owner, stage, last_stage, contact, phone, products,
+        organization_id, collection_time, in_shared_pool, transition_type, transition_id,
+        follower, follow_time, pool_id, reason_id,
+        create_user, update_user, create_time, update_time
+    </sql>
+
+    <!-- 根据主键查询 -->
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM clue
+        WHERE id = #{id}
+    </select>
+
+    <!-- 根据主键批量查询 -->
+    <select id="selectByIds" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM clue
+        WHERE id IN
+        <foreach collection="list" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </select>
+
+    <!-- 新增 -->
+    <insert id="insert" parameterType="cn.vincent.crm.clue.domain.Clue">
+        INSERT INTO clue (id, name, owner, stage, last_stage, contact, phone, products,
+                          organization_id, collection_time, in_shared_pool, transition_type, transition_id,
+                          follower, follow_time, pool_id, reason_id,
+                          create_user, update_user, create_time, update_time)
+        VALUES (#{id}, #{name}, #{owner}, #{stage}, #{lastStage}, #{contact}, #{phone}, #{products},
+                #{organizationId}, #{collectionTime}, #{inSharedPool}, #{transitionType}, #{transitionId},
+                #{follower}, #{followTime}, #{poolId}, #{reasonId},
+                #{createUser}, #{updateUser}, #{createTime}, #{updateTime})
+    </insert>
+
+    <!-- 批量新增 -->
+    <insert id="batchInsert" parameterType="java.util.List">
+        INSERT INTO clue (id, name, owner, stage, last_stage, contact, phone, products,
+                          organization_id, collection_time, in_shared_pool, transition_type, transition_id,
+                          follower, follow_time, pool_id, reason_id,
+                          create_user, update_user, create_time, update_time)
+        VALUES
+        <foreach collection="list" item="item" separator=",">
+            (#{item.id}, #{item.name}, #{item.owner}, #{item.stage}, #{item.lastStage},
+             #{item.contact}, #{item.phone}, #{item.products},
+             #{item.organizationId}, #{item.collectionTime}, #{item.inSharedPool}, #{item.transitionType}, #{item.transitionId},
+             #{item.follower}, #{item.followTime}, #{item.poolId}, #{item.reasonId},
+             #{item.createUser}, #{item.updateUser}, #{item.createTime}, #{item.updateTime})
+        </foreach>
+    </insert>
+
+    <!-- 更新 -->
+    <update id="update" parameterType="cn.vincent.crm.clue.domain.Clue">
+        UPDATE clue
+        <set>
+            <if test="name != null">name = #{name},</if>
+            <if test="owner != null">owner = #{owner},</if>
+            <if test="stage != null">stage = #{stage},</if>
+            <if test="lastStage != null">last_stage = #{lastStage},</if>
+            <if test="contact != null">contact = #{contact},</if>
+            <if test="phone != null">phone = #{phone},</if>
+            <if test="products != null">products = #{products},</if>
+            <if test="organizationId != null">organization_id = #{organizationId},</if>
+            <if test="collectionTime != null">collection_time = #{collectionTime},</if>
+            <if test="inSharedPool != null">in_shared_pool = #{inSharedPool},</if>
+            <if test="transitionType != null">transition_type = #{transitionType},</if>
+            <if test="transitionId != null">transition_id = #{transitionId},</if>
+            <if test="follower != null">follower = #{follower},</if>
+            <if test="followTime != null">follow_time = #{followTime},</if>
+            <if test="poolId != null">pool_id = #{poolId},</if>
+            <if test="reasonId != null">reason_id = #{reasonId},</if>
+            <if test="updateUser != null">update_user = #{updateUser},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <!-- 根据主键批量删除 -->
+    <delete id="deleteByIds" parameterType="java.util.List">
+        DELETE FROM clue
+        WHERE id IN
+        <foreach collection="list" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

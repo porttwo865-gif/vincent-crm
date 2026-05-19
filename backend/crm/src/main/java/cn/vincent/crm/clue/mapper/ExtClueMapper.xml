@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.vincent.crm.clue.mapper.ExtClueMapper">
+
+    <!-- 根据组织 ID 和筛选条件查询线索列表 -->
+    <select id="selectByCondition" resultType="cn.vincent.crm.clue.domain.Clue">
+        SELECT id, name, owner, stage, last_stage, contact, phone, products,
+               organization_id, collection_time, in_shared_pool, transition_type, transition_id,
+               follower, follow_time, pool_id, reason_id,
+               create_user, update_user, create_time, update_time
+        FROM clue
+        WHERE organization_id = #{orgId}
+        <if test="inSharedPool != null">
+            AND in_shared_pool = #{inSharedPool}
+        </if>
+        <if test="ownerIds != null and ownerIds.size() > 0">
+            AND owner IN
+            <foreach collection="ownerIds" item="ownerId" open="(" separator="," close=")">
+                #{ownerId}
+            </foreach>
+        </if>
+        <if test="keyword != null and keyword != ''">
+            AND (name LIKE CONCAT('%', #{keyword}, '%')
+                 OR contact LIKE CONCAT('%', #{keyword}, '%')
+                 OR phone LIKE CONCAT('%', #{keyword}, '%'))
+        </if>
+        ORDER BY create_time DESC
+    </select>
+
+    <!-- 批量更新线索池状态 -->
+    <update id="batchUpdatePoolStatus">
+        UPDATE clue
+        SET in_shared_pool = #{inSharedPool},
+            owner = #{owner},
+            pool_id = #{poolId},
+            reason_id = #{reasonId},
+            update_user = #{updateUser},
+            update_time = #{updateTime}
+        WHERE id IN
+        <foreach collection="ids" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </update>
+
+</mapper>

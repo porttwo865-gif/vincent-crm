@@ -1,0 +1,53 @@
+/**
+ * 全局样式
+ * 基于 CSS 变量的通用样式规则
+ */
+
+/* 滚动条样式 */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--text-n7);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--text-n6);
+}
+
+::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+/* 通用工具类 */
+.flex {
+  display: flex;
+}
+
+.flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.text-ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* 页面容器通用样式 */
+.page-container {
+  padding: 24px;
+  background-color: var(--text-n10);
+  min-height: 100%;
+}

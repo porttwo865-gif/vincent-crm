@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.vincent.crm.system.mapper.ModuleFormMapper">
+
+    <!-- 结果映射 -->
+    <resultMap id="BaseResultMap" type="cn.vincent.crm.system.domain.ModuleForm">
+        <id column="id" property="id"/>
+        <result column="form_key" property="formKey"/>
+        <result column="name" property="name"/>
+        <result column="organization_id" property="organizationId"/>
+        <result column="create_user" property="createUser"/>
+        <result column="update_user" property="updateUser"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+    </resultMap>
+
+    <!-- 基础列 -->
+    <sql id="Base_Column_List">
+        id, form_key, name, organization_id, create_user, update_user, create_time, update_time
+    </sql>
+
+    <!-- 根据主键查询 -->
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM module_form
+        WHERE id = #{id}
+    </select>
+
+    <!-- 根据主键批量查询 -->
+    <select id="selectByIds" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM module_form
+        WHERE id IN
+        <foreach collection="list" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </select>
+
+    <!-- 新增 -->
+    <insert id="insert" parameterType="cn.vincent.crm.system.domain.ModuleForm">
+        INSERT INTO module_form (id, form_key, name, organization_id, create_user, update_user, create_time, update_time)
+        VALUES (#{id}, #{formKey}, #{name}, #{organizationId}, #{createUser}, #{updateUser}, #{createTime}, #{updateTime})
+    </insert>
+
+    <!-- 批量新增 -->
+    <insert id="batchInsert" parameterType="java.util.List">
+        INSERT INTO module_form (id, form_key, name, organization_id, create_user, update_user, create_time, update_time)
+        VALUES
+        <foreach collection="list" item="item" separator=",">
+            (#{item.id}, #{item.formKey}, #{item.name}, #{item.organizationId},
+             #{item.createUser}, #{item.updateUser}, #{item.createTime}, #{item.updateTime})
+        </foreach>
+    </insert>
+
+    <!-- 更新 -->
+    <update id="update" parameterType="cn.vincent.crm.system.domain.ModuleForm">
+        UPDATE module_form
+        <set>
+            <if test="formKey != null">form_key = #{formKey},</if>
+            <if test="name != null">name = #{name},</if>
+            <if test="organizationId != null">organization_id = #{organizationId},</if>
+            <if test="updateUser != null">update_user = #{updateUser},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <!-- 根据主键批量删除 -->
+    <delete id="deleteByIds" parameterType="java.util.List">
+        DELETE FROM module_form
+        WHERE id IN
+        <foreach collection="list" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.vincent.crm.system.mapper.ExtModuleFormMapper">
+
+    <!-- 按表单 key 和组织 ID 查询表单 -->
+    <select id="selectByFormKeyAndOrgId" resultType="cn.vincent.crm.system.domain.ModuleForm">
+        SELECT id, form_key, name, organization_id, create_user, update_user, create_time, update_time
+        FROM module_form
+        WHERE form_key = #{formKey}
+          AND organization_id = #{orgId}
+        LIMIT 1
+    </select>
+
+</mapper>

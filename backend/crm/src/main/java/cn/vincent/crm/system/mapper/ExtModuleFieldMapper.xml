@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.vincent.crm.system.mapper.ExtModuleFieldMapper">
+
+    <!-- 按表单 key 查询所有字段 -->
+    <select id="selectByFormKey" resultType="cn.vincent.crm.system.domain.ModuleField">
+        SELECT id, form_id, form_key, name, field_key, field_type, internal_key, is_system,
+               required, default_value, options, sort, visible, editable, section_name, section_sort,
+               organization_id, create_user, update_user, create_time, update_time
+        FROM module_field
+        WHERE form_key = #{formKey}
+          AND organization_id = #{orgId}
+        ORDER BY section_sort ASC, sort ASC
+    </select>
+
+    <!-- 按表单 ID 查询字段 -->
+    <select id="selectByFormId" resultType="cn.vincent.crm.system.domain.ModuleField">
+        SELECT id, form_id, form_key, name, field_key, field_type, internal_key, is_system,
+               required, default_value, options, sort, visible, editable, section_name, section_sort,
+               organization_id, create_user, update_user, create_time, update_time
+        FROM module_field
+        WHERE form_id = #{formId}
+        ORDER BY section_sort ASC, sort ASC
+    </select>
+
+    <!-- 按表单 key 和字段标识查询字段 -->
+    <select id="selectByFormKeyAndFieldKey" resultType="cn.vincent.crm.system.domain.ModuleField">
+        SELECT id, form_id, form_key, name, field_key, field_type, internal_key, is_system,
+               required, default_value, options, sort, visible, editable, section_name, section_sort,
+               organization_id, create_user, update_user, create_time, update_time
+        FROM module_field
+        WHERE form_key = #{formKey}
+          AND field_key = #{fieldKey}
+          AND organization_id = #{orgId}
+        LIMIT 1
+    </select>
+
+    <!-- 按表单 key 删除字段 -->
+    <delete id="deleteByFormKey">
+        DELETE FROM module_field
+        WHERE form_key = #{formKey}
+          AND organization_id = #{orgId}
+    </delete>
+
+    <!-- 按资源 ID 删除字段值 -->
+    <delete id="deleteFieldValuesByResourceId">
+        DELETE FROM ${tableName}
+        WHERE resource_id = #{resourceId}
+    </delete>
+
+    <!-- 按资源 ID 查询字段值 -->
+    <select id="selectFieldValuesByResourceId" resultType="cn.vincent.mybatis.BaseResourceField">
+        SELECT id, resource_id, field_id, field_type, name, internal_key, value, create_user, create_time
+        FROM ${tableName}
+        WHERE resource_id = #{resourceId}
+    </select>
+
+    <!-- 批量按资源 ID 查询字段值 -->
+    <select id="selectFieldValuesByResourceIds" resultType="cn.vincent.mybatis.BaseResourceField">
+        SELECT id, resource_id, field_id, field_type, name, internal_key, value, create_user, create_time
+        FROM ${tableName}
+        WHERE resource_id IN
+        <foreach collection="resourceIds" item="resourceId" open="(" separator="," close=")">
+            #{resourceId}
+        </foreach>
+    </select>
+
+</mapper>

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.vincent.crm.customer.mapper.CustomerMapper">
+
+    <!-- 结果映射 -->
+    <resultMap id="BaseResultMap" type="cn.vincent.crm.customer.domain.Customer">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="owner" property="owner"/>
+        <result column="collection_time" property="collectionTime"/>
+        <result column="pool_id" property="poolId"/>
+        <result column="in_shared_pool" property="inSharedPool"/>
+        <result column="organization_id" property="organizationId"/>
+        <result column="follower" property="follower"/>
+        <result column="follow_time" property="followTime"/>
+        <result column="reason_id" property="reasonId"/>
+        <result column="create_user" property="createUser"/>
+        <result column="update_user" property="updateUser"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+    </resultMap>
+
+    <!-- 基础列 -->
+    <sql id="Base_Column_List">
+        id, name, owner, collection_time, pool_id, in_shared_pool, organization_id,
+        follower, follow_time, reason_id, create_user, update_user, create_time, update_time
+    </sql>
+
+    <!-- 根据主键查询 -->
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM customer
+        WHERE id = #{id}
+    </select>
+
+    <!-- 根据主键批量查询 -->
+    <select id="selectByIds" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM customer
+        WHERE id IN
+        <foreach collection="list" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </select>
+
+    <!-- 新增 -->
+    <insert id="insert" parameterType="cn.vincent.crm.customer.domain.Customer">
+        INSERT INTO customer (id, name, owner, collection_time, pool_id, in_shared_pool,
+                              organization_id, follower, follow_time, reason_id,
+                              create_user, update_user, create_time, update_time)
+        VALUES (#{id}, #{name}, #{owner}, #{collectionTime}, #{poolId}, #{inSharedPool},
+                #{organizationId}, #{follower}, #{followTime}, #{reasonId},
+                #{createUser}, #{updateUser}, #{createTime}, #{updateTime})
+    </insert>
+
+    <!-- 批量新增 -->
+    <insert id="batchInsert" parameterType="java.util.List">
+        INSERT INTO customer (id, name, owner, collection_time, pool_id, in_shared_pool,
+                              organization_id, follower, follow_time, reason_id,
+                              create_user, update_user, create_time, update_time)
+        VALUES
+        <foreach collection="list" item="item" separator=",">
+            (#{item.id}, #{item.name}, #{item.owner}, #{item.collectionTime}, #{item.poolId}, #{item.inSharedPool},
+             #{item.organizationId}, #{item.follower}, #{item.followTime}, #{item.reasonId},
+             #{item.createUser}, #{item.updateUser}, #{item.createTime}, #{item.updateTime})
+        </foreach>
+    </insert>
+
+    <!-- 更新 -->
+    <update id="update" parameterType="cn.vincent.crm.customer.domain.Customer">
+        UPDATE customer
+        <set>
+            <if test="name != null">name = #{name},</if>
+            <if test="owner != null">owner = #{owner},</if>
+            <if test="collectionTime != null">collection_time = #{collectionTime},</if>
+            <if test="poolId != null">pool_id = #{poolId},</if>
+            <if test="inSharedPool != null">in_shared_pool = #{inSharedPool},</if>
+            <if test="organizationId != null">organization_id = #{organizationId},</if>
+            <if test="follower != null">follower = #{follower},</if>
+            <if test="followTime != null">follow_time = #{followTime},</if>
+            <if test="reasonId != null">reason_id = #{reasonId},</if>
+            <if test="updateUser != null">update_user = #{updateUser},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <!-- 根据主键批量删除 -->
+    <delete id="deleteByIds" parameterType="java.util.List">
+        DELETE FROM customer
+        WHERE id IN
+        <foreach collection="list" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.vincent.crm.system.mapper.ExtRoleMapper">
+
+    <!-- 查询组织下所有角色 -->
+    <select id="selectByOrgId" resultType="cn.vincent.crm.system.domain.Role">
+        SELECT id, name, description, data_scope, enable, organization_id,
+               create_user, update_user, create_time, update_time
+        FROM sys_role
+        WHERE organization_id = #{orgId}
+        ORDER BY create_time ASC
+    </select>
+
+    <!-- 查询角色权限 ID 列表 -->
+    <select id="selectPermissionIdsByRoleId" resultType="java.lang.String">
+        SELECT permission_id
+        FROM sys_role_permission
+        WHERE role_id = #{roleId}
+    </select>
+
+    <!-- 统计角色关联用户数 -->
+    <select id="countUsersByRoleId" resultType="int">
+        SELECT COUNT(1)
+        FROM sys_user_role
+        WHERE role_id = #{roleId}
+    </select>
+
+    <!-- 删除角色权限关联（按角色 ID） -->
+    <delete id="deleteRolePermissionByRoleId">
+        DELETE FROM sys_role_permission WHERE role_id = #{roleId}
+    </delete>
+
+    <!-- 删除角色数据范围-部门关联（按角色 ID） -->
+    <delete id="deleteRoleScopeDeptByRoleId">
+        DELETE FROM role_scope_dept WHERE role_id = #{roleId}
+    </delete>
+
+</mapper>

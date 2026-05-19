@@ -1,0 +1,78 @@
+# ========================
+# 操作系统
+# ========================
+.DS_Store
+Thumbs.db
+Desktop.ini
+*.swp
+*.swo
+*~
+
+# ========================
+# IDE / 编辑器
+# ========================
+.idea/
+*.iml
+*.iws
+*.ipr
+.vscode/
+*.code-workspace
+.settings/
+.project
+.classpath
+.factorypath
+*.launch
+.sts4-cache/
+
+# ========================
+# Java / Maven
+# ========================
+target/
+*.class
+*.jar
+*.war
+*.ear
+*.log
+hs_err_pid*
+replay_pid*
+
+# ========================
+# Spring Boot
+# ========================
+spring-shell.log
+
+# ========================
+# 前端 / Node.js / pnpm
+# ========================
+node_modules/
+dist/
+.cache/
+*.local
+.env.local
+.env.*.local
+
+# pnpm
+.pnpm-store/
+
+# 日志
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ========================
+# Docker / 基础设施
+# ========================
+docker-compose.override.yml
+.mysql_data/
+.redis_data/
+
+# ========================
+# 通用
+# ========================
+*.bak
+*.tmp
+*.temp
+*.pid
+*.seed
+*.gz

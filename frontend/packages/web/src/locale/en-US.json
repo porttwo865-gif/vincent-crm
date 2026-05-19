@@ -1,0 +1,10 @@
+{
+  "web": {
+    "title": "VincentCRM Admin",
+    "logout": "Logout",
+    "profile": "Profile",
+    "changePassword": "Change Password",
+    "fullscreen": "Fullscreen",
+    "exitFullscreen": "Exit Fullscreen"
+  }
+}

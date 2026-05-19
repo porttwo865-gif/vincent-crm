@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.vincent.crm.system.mapper.ExtDepartmentMapper">
+
+    <!-- 查询组织下所有部门 -->
+    <select id="selectByOrgId" resultType="cn.vincent.crm.system.domain.Department">
+        SELECT id, name, parent_id, sort, organization_id,
+               create_user, update_user, create_time, update_time
+        FROM sys_department
+        WHERE organization_id = #{orgId}
+        ORDER BY sort ASC, create_time ASC
+    </select>
+
+    <!-- 查询指定父部门下的子部门数量 -->
+    <select id="countByParentId" resultType="int">
+        SELECT COUNT(1)
+        FROM sys_department
+        WHERE parent_id = #{parentId}
+    </select>
+
+    <!-- 查询部门下关联的用户数量 -->
+    <select id="countUsersByDeptId" resultType="int">
+        SELECT COUNT(1)
+        FROM sys_organization_user
+        WHERE department_id = #{departmentId}
+    </select>
+
+</mapper>

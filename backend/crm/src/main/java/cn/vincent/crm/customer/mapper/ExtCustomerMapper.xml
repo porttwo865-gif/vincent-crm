@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.vincent.crm.customer.mapper.ExtCustomerMapper">
+
+    <!-- 查询组织下客户分页列表 -->
+    <select id="selectCustomerPage" resultType="cn.vincent.crm.customer.domain.Customer">
+        SELECT id, name, owner, collection_time, pool_id, in_shared_pool, organization_id,
+               follower, follow_time, reason_id, create_user, update_user, create_time, update_time
+        FROM customer
+        WHERE organization_id = #{orgId}
+        <if test="inSharedPool != null">
+            AND in_shared_pool = #{inSharedPool}
+        </if>
+        <if test="ownerIds != null and ownerIds.size() > 0">
+            AND owner IN
+            <foreach collection="ownerIds" item="ownerId" open="(" separator="," close=")">
+                #{ownerId}
+            </foreach>
+        </if>
+        ORDER BY create_time DESC
+    </select>
+
+    <!-- 批量更新客户为公海池状态 -->
+    <update id="batchMoveToPool">
+        UPDATE customer
+        SET in_shared_pool = 1,
+            owner = NULL,
+            reason_id = #{reasonId},
+            update_user = #{updateUser},
+            update_time = #{updateTime}
+        WHERE id IN
+        <foreach collection="ids" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </update>
+
+</mapper>

@@ -1,0 +1,54 @@
+{
+  "common": {
+    "confirm": "Confirm",
+    "cancel": "Cancel",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "add": "Add",
+    "search": "Search",
+    "reset": "Reset",
+    "enable": "Enable",
+    "disable": "Disable",
+    "export": "Export",
+    "import": "Import",
+    "operation": "Action",
+    "status": "Status",
+    "loading": "Loading...",
+    "noData": "No Data",
+    "success": "Success",
+    "failed": "Failed",
+    "required": "This field is required",
+    "total": "Total {count} items"
+  },
+  "login": {
+    "title": "VincentCRM",
+    "account": "Account",
+    "password": "Password",
+    "submit": "Login",
+    "accountPlaceholder": "Enter account",
+    "passwordPlaceholder": "Enter password",
+    "accountRequired": "Account is required",
+    "passwordRequired": "Password is required"
+  },
+  "menu": {
+    "workbench": "Workbench",
+    "customer": "Customers",
+    "clue": "Leads",
+    "opportunity": "Opportunities",
+    "contract": "Contracts",
+    "order": "Orders",
+    "product": "Products",
+    "follow": "Follow-ups",
+    "approval": "Approvals",
+    "dashboard": "Dashboard",
+    "system": "Settings"
+  },
+  "workbench": {
+    "title": "Workbench",
+    "todayFollow": "Today's Follow-ups",
+    "myCustomer": "My Customers",
+    "myOpportunity": "My Opportunities",
+    "recentActivity": "Recent Activity"
+  }
+}

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.vincent.crm.system.mapper.ExtUserMapper">
+
+    <!-- 根据用户名和组织 ID 查询用户 -->
+    <select id="selectByUsernameAndOrgId" resultType="cn.vincent.crm.system.domain.User">
+        SELECT id, username, password, name, email, phone, avatar, enable, organization_id,
+               create_user, update_user, create_time, update_time
+        FROM sys_user
+        WHERE username = #{username}
+          AND organization_id = #{organizationId}
+        LIMIT 1
+    </select>
+
+    <!-- 根据用户 ID 查询角色 ID 列表 -->
+    <select id="selectRoleIdsByUserId" resultType="java.lang.String">
+        SELECT role_id
+        FROM sys_user_role
+        WHERE user_id = #{userId}
+    </select>
+
+    <!-- 根据角色 ID 列表查询权限标识列表 -->
+    <select id="selectPermissionIdsByRoleIds" resultType="java.lang.String">
+        SELECT DISTINCT rp.permission_id
+        FROM sys_role_permission rp
+        WHERE rp.role_id IN
+        <foreach collection="roleIds" item="roleId" open="(" separator="," close=")">
+            #{roleId}
+        </foreach>
+    </select>
+
+    <!-- 根据条件分页查询用户列表 -->
+    <select id="selectUserPage" resultType="cn.vincent.crm.system.domain.User">
+        SELECT u.id, u.username, u.password, u.name, u.email, u.phone, u.avatar, u.enable,
+               u.organization_id, u.create_user, u.update_user, u.create_time, u.update_time
+        FROM sys_user u
+        <where>
+            u.organization_id = #{organizationId}
+            <if test="keyword != null and keyword != ''">
+                AND (u.username LIKE CONCAT('%', #{keyword}, '%')
+                     OR u.name LIKE CONCAT('%', #{keyword}, '%')
+                     OR u.email LIKE CONCAT('%', #{keyword}, '%')
+                     OR u.phone LIKE CONCAT('%', #{keyword}, '%'))
+            </if>
+            <if test="departmentId != null and departmentId != ''">
+                AND u.id IN (SELECT ou.user_id FROM sys_organization_user ou WHERE ou.department_id = #{departmentId})
+            </if>
+            <if test="enable != null">
+                AND u.enable = #{enable}
+            </if>
+        </where>
+        ORDER BY u.create_time DESC
+    </select>
+
+    <!-- 删除用户角色关联（按用户 ID） -->
+    <delete id="deleteUserRoleByUserId">
+        DELETE FROM sys_user_role WHERE user_id = #{userId}
+    </delete>
+
+    <!-- 删除组织用户关联（按用户 ID） -->
+    <delete id="deleteOrgUserByUserId">
+        DELETE FROM sys_organization_user WHERE user_id = #{userId}
+    </delete>
+
+    <!-- 删除角色权限关联（按角色 ID） -->
+    <delete id="deleteRolePermissionByRoleId">
+        DELETE FROM sys_role_permission WHERE role_id = #{roleId}
+    </delete>
+
+    <!-- 删除角色数据范围-部门关联（按角色 ID） -->
+    <delete id="deleteRoleScopeDeptByRoleId">
+        DELETE FROM role_scope_dept WHERE role_id = #{roleId}
+    </delete>
+
+    <!-- 查询用户所属部门 ID -->
+    <select id="selectDeptIdByUserId" resultType="java.lang.String">
+        SELECT department_id
+        FROM sys_organization_user
+        WHERE user_id = #{userId}
+        LIMIT 1
+    </select>
+
+</mapper>

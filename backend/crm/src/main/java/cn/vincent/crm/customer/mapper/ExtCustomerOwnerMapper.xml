@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.vincent.crm.customer.mapper.ExtCustomerOwnerMapper">
+
+    <!-- 根据客户 ID 查询负责人变更历史 -->
+    <select id="selectByCustomerId" resultType="cn.vincent.crm.customer.domain.CustomerOwner">
+        SELECT id, customer_id, from_owner, to_owner, operation_type, operator_id, operate_time, organization_id
+        FROM customer_owner
+        WHERE customer_id = #{customerId}
+        ORDER BY operate_time DESC
+    </select>
+
+</mapper>

@@ -1,0 +1,20 @@
+{
+  "name": "vincent-crm-frontend",
+  "version": "1.0.0",
+  "private": true,
+  "description": "VincentCRM 前端项目 - pnpm monorepo",
+  "scripts": {
+    "dev:web": "pnpm --filter web dev",
+    "dev:mobile": "pnpm --filter mobile dev",
+    "build:web": "pnpm --filter web build",
+    "build:mobile": "pnpm --filter mobile build",
+    "build:shared": "pnpm --filter @vincent-crm/shared build"
+  },
+  "engines": {
+    "node": ">=22.0.0",
+    "pnpm": ">=10.0.0"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": ["esbuild", "vue-demi"]
+  }
+}

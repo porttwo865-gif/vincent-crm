@@ -1,0 +1,10 @@
+{
+  "web": {
+    "title": "VincentCRM 管理平台",
+    "logout": "退出登录",
+    "profile": "个人设置",
+    "changePassword": "修改密码",
+    "fullscreen": "全屏",
+    "exitFullscreen": "退出全屏"
+  }
+}
