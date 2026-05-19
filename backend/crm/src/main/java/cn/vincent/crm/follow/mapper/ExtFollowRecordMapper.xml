@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.vincent.crm.follow.mapper.ExtFollowRecordMapper">
+
+    <!-- 根据业务类型和业务对象 ID 查询跟进记录列表（时间倒序） -->
+    <select id="selectByBiz" resultType="cn.vincent.crm.follow.domain.FollowRecord">
+        SELECT id, biz_type, biz_id, content, follow_type, next_follow_time, attachments,
+               owner, organization_id, create_user, update_user, create_time, update_time
+        FROM crm_follow_record
+        WHERE biz_type = #{bizType} AND biz_id = #{bizId}
+        ORDER BY create_time DESC
+    </select>
+
+</mapper>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.vincent.crm.approval.mapper.ExtApprovalTemplateMapper">
+
+    <!-- 审批模板分页列表查询 -->
+    <select id="selectTemplatePage" resultType="cn.vincent.crm.approval.domain.ApprovalTemplate">
+        SELECT id, name, biz_type, description, enabled, nodes,
+               organization_id, create_user, update_user, create_time, update_time
+        FROM crm_approval_template
+        WHERE organization_id = #{organizationId}
+        <if test="keyword != null and keyword != ''">
+            AND (name LIKE CONCAT('%', #{keyword}, '%')
+                 OR description LIKE CONCAT('%', #{keyword}, '%'))
+        </if>
+        <if test="bizType != null and bizType != ''">
+            AND biz_type = #{bizType}
+        </if>
+        <if test="enabled != null">
+            AND enabled = #{enabled}
+        </if>
+        ORDER BY create_time DESC
+    </select>
+
+    <!-- 根据业务类型查询启用的审批模板 -->
+    <select id="selectEnabledByBizType" resultType="cn.vincent.crm.approval.domain.ApprovalTemplate">
+        SELECT id, name, biz_type, description, enabled, nodes,
+               organization_id, create_user, update_user, create_time, update_time
+        FROM crm_approval_template
+        WHERE biz_type = #{bizType}
+          AND enabled = 1
+          AND organization_id = #{organizationId}
+        ORDER BY create_time DESC
+    </select>
+
+</mapper>

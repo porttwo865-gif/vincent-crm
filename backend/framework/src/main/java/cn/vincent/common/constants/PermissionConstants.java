@@ -87,4 +87,26 @@ public class PermissionConstants {
     public static final String ORDER_MANAGEMENT_ADD = "ORDER_MANAGEMENT_ADD";
     public static final String ORDER_MANAGEMENT_UPDATE = "ORDER_MANAGEMENT_UPDATE";
     public static final String ORDER_MANAGEMENT_DELETE = "ORDER_MANAGEMENT_DELETE";
+
+    // ========== 审批模板 ==========
+    public static final String APPROVAL_TEMPLATE_READ = "APPROVAL_TEMPLATE_READ";
+    public static final String APPROVAL_TEMPLATE_ADD = "APPROVAL_TEMPLATE_ADD";
+    public static final String APPROVAL_TEMPLATE_UPDATE = "APPROVAL_TEMPLATE_UPDATE";
+    public static final String APPROVAL_TEMPLATE_DELETE = "APPROVAL_TEMPLATE_DELETE";
+
+    // ========== 审批实例 ==========
+    public static final String APPROVAL_INSTANCE_READ = "APPROVAL_INSTANCE_READ";
+    public static final String APPROVAL_INSTANCE_SUBMIT = "APPROVAL_INSTANCE_SUBMIT";
+
+    // ========== 跟进记录 ==========
+    public static final String FOLLOW_RECORD_READ = "FOLLOW_RECORD_READ";
+    public static final String FOLLOW_RECORD_ADD = "FOLLOW_RECORD_ADD";
+    public static final String FOLLOW_RECORD_UPDATE = "FOLLOW_RECORD_UPDATE";
+    public static final String FOLLOW_RECORD_DELETE = "FOLLOW_RECORD_DELETE";
+
+    // ========== 跟进计划 ==========
+    public static final String FOLLOW_PLAN_READ = "FOLLOW_PLAN_READ";
+    public static final String FOLLOW_PLAN_ADD = "FOLLOW_PLAN_ADD";
+    public static final String FOLLOW_PLAN_UPDATE = "FOLLOW_PLAN_UPDATE";
+    public static final String FOLLOW_PLAN_DELETE = "FOLLOW_PLAN_DELETE";
 }

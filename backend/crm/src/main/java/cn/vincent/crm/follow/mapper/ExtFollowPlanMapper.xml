@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.vincent.crm.follow.mapper.ExtFollowPlanMapper">
+
+    <!-- 根据业务类型和业务对象 ID 查询跟进计划列表 -->
+    <select id="selectByBiz" resultType="cn.vincent.crm.follow.domain.FollowPlan">
+        SELECT id, biz_type, biz_id, plan_time, content, remind_before, status,
+               owner, organization_id, create_user, update_user, create_time, update_time
+        FROM crm_follow_plan
+        WHERE biz_type = #{bizType} AND biz_id = #{bizId}
+        ORDER BY plan_time ASC
+    </select>
+
+    <!-- 查询我的待办跟进计划（用于工作台） -->
+    <select id="selectMyPending" resultType="cn.vincent.crm.follow.domain.FollowPlan">
+        SELECT id, biz_type, biz_id, plan_time, content, remind_before, status,
+               owner, organization_id, create_user, update_user, create_time, update_time
+        FROM crm_follow_plan
+        WHERE owner = #{owner}
+          AND organization_id = #{organizationId}
+          AND status = 'pending'
+        ORDER BY plan_time ASC
+    </select>
+
+</mapper>

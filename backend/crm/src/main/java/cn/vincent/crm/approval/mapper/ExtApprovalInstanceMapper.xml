@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.vincent.crm.approval.mapper.ExtApprovalInstanceMapper">
+
+    <!-- 我发起的审批实例分页查询 -->
+    <select id="selectMinePage" resultType="cn.vincent.crm.approval.domain.ApprovalInstance">
+        SELECT id, template_id, template_name, biz_type, biz_id, biz_name,
+               applicant, status, current_node_seq, remark,
+               organization_id, create_user, update_user, create_time, update_time
+        FROM crm_approval_instance
+        WHERE applicant = #{applicant}
+          AND organization_id = #{organizationId}
+        <if test="bizType != null and bizType != ''">
+            AND biz_type = #{bizType}
+        </if>
+        <if test="status != null and status != ''">
+            AND status = #{status}
+        </if>
+        <if test="keyword != null and keyword != ''">
+            AND (biz_name LIKE CONCAT('%', #{keyword}, '%')
+                 OR template_name LIKE CONCAT('%', #{keyword}, '%'))
+        </if>
+        ORDER BY create_time DESC
+    </select>
+
+    <!-- 待我审批的实例分页查询 -->
+    <select id="selectPendingPage" resultType="cn.vincent.crm.approval.domain.ApprovalInstance">
+        SELECT i.id, i.template_id, i.template_name, i.biz_type, i.biz_id, i.biz_name,
+               i.applicant, i.status, i.current_node_seq, i.remark,
+               i.organization_id, i.create_user, i.update_user, i.create_time, i.update_time
+        FROM crm_approval_instance i
+        INNER JOIN crm_approval_node_record r ON i.id = r.instance_id
+        WHERE r.approver_id = #{approverId}
+          AND r.status = 'pending'
+          AND i.status = 'pending'
+          AND i.organization_id = #{organizationId}
+        <if test="bizType != null and bizType != ''">
+            AND i.biz_type = #{bizType}
+        </if>
+        <if test="keyword != null and keyword != ''">
+            AND (i.biz_name LIKE CONCAT('%', #{keyword}, '%')
+                 OR i.template_name LIKE CONCAT('%', #{keyword}, '%'))
+        </if>
+        ORDER BY i.create_time DESC
+    </select>
+
+    <!-- 全部审批实例分页查询 -->
+    <select id="selectAllPage" resultType="cn.vincent.crm.approval.domain.ApprovalInstance">
+        SELECT id, template_id, template_name, biz_type, biz_id, biz_name,
+               applicant, status, current_node_seq, remark,
+               organization_id, create_user, update_user, create_time, update_time
+        FROM crm_approval_instance
+        WHERE organization_id = #{organizationId}
+        <if test="bizType != null and bizType != ''">
+            AND biz_type = #{bizType}
+        </if>
+        <if test="status != null and status != ''">
+            AND status = #{status}
+        </if>
+        <if test="keyword != null and keyword != ''">
+            AND (biz_name LIKE CONCAT('%', #{keyword}, '%')
+                 OR template_name LIKE CONCAT('%', #{keyword}, '%'))
+        </if>
+        ORDER BY create_time DESC
+    </select>
+
+</mapper>

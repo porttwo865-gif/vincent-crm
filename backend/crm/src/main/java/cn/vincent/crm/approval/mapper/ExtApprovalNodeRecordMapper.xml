@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.vincent.crm.approval.mapper.ExtApprovalNodeRecordMapper">
+
+    <!-- 根据实例 ID 查询节点记录列表 -->
+    <select id="selectByInstanceId" resultType="cn.vincent.crm.approval.domain.ApprovalNodeRecord">
+        SELECT id, instance_id, node_seq, approver_id, status, comment, operate_time,
+               create_user, update_user, create_time, update_time
+        FROM crm_approval_node_record
+        WHERE instance_id = #{instanceId}
+        ORDER BY node_seq ASC, create_time ASC
+    </select>
+
+    <!-- 根据实例 ID 和节点序号查询待审批的节点记录 -->
+    <select id="selectPendingByInstanceAndSeq" resultType="cn.vincent.crm.approval.domain.ApprovalNodeRecord">
+        SELECT id, instance_id, node_seq, approver_id, status, comment, operate_time,
+               create_user, update_user, create_time, update_time
+        FROM crm_approval_node_record
+        WHERE instance_id = #{instanceId}
+          AND node_seq = #{nodeSeq}
+          AND status = 'pending'
+    </select>
+
+</mapper>

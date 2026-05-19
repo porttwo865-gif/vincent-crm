@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.vincent.crm.follow.mapper.FollowPlanMapper">
+
+    <!-- 结果映射 -->
+    <resultMap id="BaseResultMap" type="cn.vincent.crm.follow.domain.FollowPlan">
+        <id column="id" property="id"/>
+        <result column="biz_type" property="bizType"/>
+        <result column="biz_id" property="bizId"/>
+        <result column="plan_time" property="planTime"/>
+        <result column="content" property="content"/>
+        <result column="remind_before" property="remindBefore"/>
+        <result column="status" property="status"/>
+        <result column="owner" property="owner"/>
+        <result column="organization_id" property="organizationId"/>
+        <result column="create_user" property="createUser"/>
+        <result column="update_user" property="updateUser"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+    </resultMap>
+
+    <!-- 基础列 -->
+    <sql id="Base_Column_List">
+        id, biz_type, biz_id, plan_time, content, remind_before, status,
+        owner, organization_id, create_user, update_user, create_time, update_time
+    </sql>
+
+    <!-- 根据主键查询 -->
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM crm_follow_plan
+        WHERE id = #{id}
+    </select>
+
+    <!-- 根据主键批量查询 -->
+    <select id="selectByIds" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM crm_follow_plan
+        WHERE id IN
+        <foreach collection="list" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </select>
+
+    <!-- 新增 -->
+    <insert id="insert" parameterType="cn.vincent.crm.follow.domain.FollowPlan">
+        INSERT INTO crm_follow_plan (id, biz_type, biz_id, plan_time, content, remind_before, status,
+                                      owner, organization_id,
+                                      create_user, update_user, create_time, update_time)
+        VALUES (#{id}, #{bizType}, #{bizId}, #{planTime}, #{content}, #{remindBefore}, #{status},
+                #{owner}, #{organizationId},
+                #{createUser}, #{updateUser}, #{createTime}, #{updateTime})
+    </insert>
+
+    <!-- 批量新增 -->
+    <insert id="batchInsert" parameterType="java.util.List">
+        INSERT INTO crm_follow_plan (id, biz_type, biz_id, plan_time, content, remind_before, status,
+                                      owner, organization_id,
+                                      create_user, update_user, create_time, update_time)
+        VALUES
+        <foreach collection="list" item="item" separator=",">
+            (#{item.id}, #{item.bizType}, #{item.bizId}, #{item.planTime}, #{item.content}, #{item.remindBefore}, #{item.status},
+             #{item.owner}, #{item.organizationId},
+             #{item.createUser}, #{item.updateUser}, #{item.createTime}, #{item.updateTime})
+        </foreach>
+    </insert>
+
+    <!-- 更新 -->
+    <update id="update" parameterType="cn.vincent.crm.follow.domain.FollowPlan">
+        UPDATE crm_follow_plan
+        <set>
+            <if test="bizType != null">biz_type = #{bizType},</if>
+            <if test="bizId != null">biz_id = #{bizId},</if>
+            <if test="planTime != null">plan_time = #{planTime},</if>
+            <if test="content != null">content = #{content},</if>
+            <if test="remindBefore != null">remind_before = #{remindBefore},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="owner != null">owner = #{owner},</if>
+            <if test="organizationId != null">organization_id = #{organizationId},</if>
+            <if test="updateUser != null">update_user = #{updateUser},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <!-- 根据主键批量删除 -->
+    <delete id="deleteByIds" parameterType="java.util.List">
+        DELETE FROM crm_follow_plan
+        WHERE id IN
+        <foreach collection="list" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>
