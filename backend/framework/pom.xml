@@ -19,6 +19,12 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-logging</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <!-- Spring Boot Validation -->
@@ -42,6 +48,11 @@
                 <exclusion>
                     <groupId>org.apache.shiro</groupId>
                     <artifactId>shiro-spring</artifactId>
+                </exclusion>
+                <!-- 排除非 Jakarta 版本的 starter，避免 javax.servlet 冲突 -->
+                <exclusion>
+                    <groupId>org.apache.shiro</groupId>
+                    <artifactId>shiro-spring-boot-starter</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>
