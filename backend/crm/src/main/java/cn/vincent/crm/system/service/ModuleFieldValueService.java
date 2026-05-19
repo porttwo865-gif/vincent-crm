@@ -41,6 +41,8 @@ public class ModuleFieldValueService {
         FORM_KEY_TABLE_MAP.put("opportunity", "opportunity_field");
         FORM_KEY_TABLE_MAP.put("contract", "contract_field");
         FORM_KEY_TABLE_MAP.put("product", "product_field");
+        FORM_KEY_TABLE_MAP.put("invoice", "invoice_field");
+        FORM_KEY_TABLE_MAP.put("order_form", "order_form_field");
     }
 
     /**

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.vincent.crm.contract.mapper.ExtContractMapper">
+
+    <select id="selectContractPage" resultType="cn.vincent.crm.contract.domain.Contract">
+        SELECT id, name, customer_id, opportunity_id, owner, amount, start_date, end_date, signed_date, status, remark, pos,
+               organization_id, create_user, update_user, create_time, update_time
+        FROM crm_contract
+        WHERE organization_id = #{organizationId}
+        <if test="keyword != null and keyword != ''">
+            AND name LIKE CONCAT('%', #{keyword}, '%')
+        </if>
+        <if test="status != null and status != ''">
+            AND status = #{status}
+        </if>
+        <if test="customerId != null and customerId != ''">
+            AND customer_id = #{customerId}
+        </if>
+        ORDER BY create_time DESC
+    </select>
+
+</mapper>

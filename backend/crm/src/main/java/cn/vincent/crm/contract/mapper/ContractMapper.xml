@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.vincent.crm.contract.mapper.ContractMapper">
+
+    <resultMap id="BaseResultMap" type="cn.vincent.crm.contract.domain.Contract">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="customer_id" property="customerId"/>
+        <result column="opportunity_id" property="opportunityId"/>
+        <result column="owner" property="owner"/>
+        <result column="amount" property="amount"/>
+        <result column="start_date" property="startDate"/>
+        <result column="end_date" property="endDate"/>
+        <result column="signed_date" property="signedDate"/>
+        <result column="status" property="status"/>
+        <result column="remark" property="remark"/>
+        <result column="pos" property="pos"/>
+        <result column="organization_id" property="organizationId"/>
+        <result column="create_user" property="createUser"/>
+        <result column="update_user" property="updateUser"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, name, customer_id, opportunity_id, owner, amount, start_date, end_date, signed_date, status, remark, pos,
+        organization_id, create_user, update_user, create_time, update_time
+    </sql>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM crm_contract
+        WHERE id = #{id}
+    </select>
+
+    <select id="selectByIds" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM crm_contract
+        WHERE id IN
+        <foreach collection="list" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </select>
+
+    <insert id="insert" parameterType="cn.vincent.crm.contract.domain.Contract">
+        INSERT INTO crm_contract (id, name, customer_id, opportunity_id, owner, amount, start_date, end_date, signed_date, status, remark, pos,
+                                  organization_id, create_user, update_user, create_time, update_time)
+        VALUES (#{id}, #{name}, #{customerId}, #{opportunityId}, #{owner}, #{amount}, #{startDate}, #{endDate}, #{signedDate}, #{status}, #{remark}, #{pos},
+                #{organizationId}, #{createUser}, #{updateUser}, #{createTime}, #{updateTime})
+    </insert>
+
+    <insert id="batchInsert" parameterType="java.util.List">
+        INSERT INTO crm_contract (id, name, customer_id, opportunity_id, owner, amount, start_date, end_date, signed_date, status, remark, pos,
+                                  organization_id, create_user, update_user, create_time, update_time)
+        VALUES
+        <foreach collection="list" item="item" separator=",">
+            (#{item.id}, #{item.name}, #{item.customerId}, #{item.opportunityId}, #{item.owner}, #{item.amount}, #{item.startDate}, #{item.endDate}, #{item.signedDate}, #{item.status}, #{item.remark}, #{item.pos},
+             #{item.organizationId}, #{item.createUser}, #{item.updateUser}, #{item.createTime}, #{item.updateTime})
+        </foreach>
+    </insert>
+
+    <update id="update" parameterType="cn.vincent.crm.contract.domain.Contract">
+        UPDATE crm_contract
+        <set>
+            <if test="name != null">name = #{name},</if>
+            <if test="customerId != null">customer_id = #{customerId},</if>
+            <if test="opportunityId != null">opportunity_id = #{opportunityId},</if>
+            <if test="owner != null">owner = #{owner},</if>
+            <if test="amount != null">amount = #{amount},</if>
+            <if test="startDate != null">start_date = #{startDate},</if>
+            <if test="endDate != null">end_date = #{endDate},</if>
+            <if test="signedDate != null">signed_date = #{signedDate},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="pos != null">pos = #{pos},</if>
+            <if test="organizationId != null">organization_id = #{organizationId},</if>
+            <if test="updateUser != null">update_user = #{updateUser},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteByIds" parameterType="java.util.List">
+        DELETE FROM crm_contract
+        WHERE id IN
+        <foreach collection="list" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

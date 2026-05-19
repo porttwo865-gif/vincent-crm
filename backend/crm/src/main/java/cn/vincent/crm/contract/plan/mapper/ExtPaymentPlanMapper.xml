@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.vincent.crm.contract.plan.mapper.ExtPaymentPlanMapper">
+
+    <select id="selectByContractId" resultType="cn.vincent.crm.contract.plan.domain.PaymentPlan">
+        SELECT id, contract_id, plan_num, amount, expected_date, actual_date, status, remark,
+               create_user, update_user, create_time, update_time
+        FROM crm_payment_plan
+        WHERE contract_id = #{contractId}
+        ORDER BY plan_num ASC, create_time ASC
+    </select>
+
+</mapper>

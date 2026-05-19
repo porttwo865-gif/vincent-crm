@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.vincent.crm.invoice.mapper.ExtInvoiceMapper">
+
+    <select id="selectInvoicePage" resultType="cn.vincent.crm.invoice.domain.Invoice">
+        SELECT id, contract_id, customer_id, invoice_no, amount, invoice_date, invoice_type, status, remark,
+               organization_id, create_user, update_user, create_time, update_time
+        FROM crm_invoice
+        WHERE organization_id = #{organizationId}
+        <if test="keyword != null and keyword != ''">
+            AND (invoice_no LIKE CONCAT('%', #{keyword}, '%') OR remark LIKE CONCAT('%', #{keyword}, '%'))
+        </if>
+        <if test="status != null and status != ''">
+            AND status = #{status}
+        </if>
+        <if test="customerId != null and customerId != ''">
+            AND customer_id = #{customerId}
+        </if>
+        ORDER BY create_time DESC
+    </select>
+
+</mapper>

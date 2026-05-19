@@ -69,4 +69,22 @@ public class PermissionConstants {
     public static final String PRODUCT_MANAGEMENT_ADD = "PRODUCT_MANAGEMENT_ADD";
     public static final String PRODUCT_MANAGEMENT_UPDATE = "PRODUCT_MANAGEMENT_UPDATE";
     public static final String PRODUCT_MANAGEMENT_DELETE = "PRODUCT_MANAGEMENT_DELETE";
+
+    // ========== 合同管理 ==========
+    public static final String CONTRACT_MANAGEMENT_READ = "CONTRACT_MANAGEMENT_READ";
+    public static final String CONTRACT_MANAGEMENT_ADD = "CONTRACT_MANAGEMENT_ADD";
+    public static final String CONTRACT_MANAGEMENT_UPDATE = "CONTRACT_MANAGEMENT_UPDATE";
+    public static final String CONTRACT_MANAGEMENT_DELETE = "CONTRACT_MANAGEMENT_DELETE";
+
+    // ========== 发票管理 ==========
+    public static final String INVOICE_MANAGEMENT_READ = "INVOICE_MANAGEMENT_READ";
+    public static final String INVOICE_MANAGEMENT_ADD = "INVOICE_MANAGEMENT_ADD";
+    public static final String INVOICE_MANAGEMENT_UPDATE = "INVOICE_MANAGEMENT_UPDATE";
+    public static final String INVOICE_MANAGEMENT_DELETE = "INVOICE_MANAGEMENT_DELETE";
+
+    // ========== 订单管理 ==========
+    public static final String ORDER_MANAGEMENT_READ = "ORDER_MANAGEMENT_READ";
+    public static final String ORDER_MANAGEMENT_ADD = "ORDER_MANAGEMENT_ADD";
+    public static final String ORDER_MANAGEMENT_UPDATE = "ORDER_MANAGEMENT_UPDATE";
+    public static final String ORDER_MANAGEMENT_DELETE = "ORDER_MANAGEMENT_DELETE";
 }

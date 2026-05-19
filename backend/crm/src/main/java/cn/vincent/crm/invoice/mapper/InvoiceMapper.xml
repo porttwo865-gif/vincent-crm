@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.vincent.crm.invoice.mapper.InvoiceMapper">
+
+    <resultMap id="BaseResultMap" type="cn.vincent.crm.invoice.domain.Invoice">
+        <id column="id" property="id"/>
+        <result column="contract_id" property="contractId"/>
+        <result column="customer_id" property="customerId"/>
+        <result column="invoice_no" property="invoiceNo"/>
+        <result column="amount" property="amount"/>
+        <result column="invoice_date" property="invoiceDate"/>
+        <result column="invoice_type" property="invoiceType"/>
+        <result column="status" property="status"/>
+        <result column="remark" property="remark"/>
+        <result column="organization_id" property="organizationId"/>
+        <result column="create_user" property="createUser"/>
+        <result column="update_user" property="updateUser"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, contract_id, customer_id, invoice_no, amount, invoice_date, invoice_type, status, remark,
+        organization_id, create_user, update_user, create_time, update_time
+    </sql>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM crm_invoice
+        WHERE id = #{id}
+    </select>
+
+    <select id="selectByIds" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM crm_invoice
+        WHERE id IN
+        <foreach collection="list" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </select>
+
+    <insert id="insert" parameterType="cn.vincent.crm.invoice.domain.Invoice">
+        INSERT INTO crm_invoice (id, contract_id, customer_id, invoice_no, amount, invoice_date, invoice_type, status, remark,
+                                 organization_id, create_user, update_user, create_time, update_time)
+        VALUES (#{id}, #{contractId}, #{customerId}, #{invoiceNo}, #{amount}, #{invoiceDate}, #{invoiceType}, #{status}, #{remark},
+                #{organizationId}, #{createUser}, #{updateUser}, #{createTime}, #{updateTime})
+    </insert>
+
+    <insert id="batchInsert" parameterType="java.util.List">
+        INSERT INTO crm_invoice (id, contract_id, customer_id, invoice_no, amount, invoice_date, invoice_type, status, remark,
+                                 organization_id, create_user, update_user, create_time, update_time)
+        VALUES
+        <foreach collection="list" item="item" separator=",">
+            (#{item.id}, #{item.contractId}, #{item.customerId}, #{item.invoiceNo}, #{item.amount}, #{item.invoiceDate}, #{item.invoiceType}, #{item.status}, #{item.remark},
+             #{item.organizationId}, #{item.createUser}, #{item.updateUser}, #{item.createTime}, #{item.updateTime})
+        </foreach>
+    </insert>
+
+    <update id="update" parameterType="cn.vincent.crm.invoice.domain.Invoice">
+        UPDATE crm_invoice
+        <set>
+            <if test="contractId != null">contract_id = #{contractId},</if>
+            <if test="customerId != null">customer_id = #{customerId},</if>
+            <if test="invoiceNo != null">invoice_no = #{invoiceNo},</if>
+            <if test="amount != null">amount = #{amount},</if>
+            <if test="invoiceDate != null">invoice_date = #{invoiceDate},</if>
+            <if test="invoiceType != null">invoice_type = #{invoiceType},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="organizationId != null">organization_id = #{organizationId},</if>
+            <if test="updateUser != null">update_user = #{updateUser},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteByIds" parameterType="java.util.List">
+        DELETE FROM crm_invoice
+        WHERE id IN
+        <foreach collection="list" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>
