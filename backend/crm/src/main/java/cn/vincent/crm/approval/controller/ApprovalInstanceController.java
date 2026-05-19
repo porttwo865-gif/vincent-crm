@@ -24,7 +24,7 @@ import java.util.List;
  * 审批实例控制器
  */
 @RestController
-@RequestMapping("/crm/v1/approval/instance")
+@RequestMapping("/approval/instance")
 @Tag(name = "审批实例管理")
 public class ApprovalInstanceController {
 

@@ -15,7 +15,7 @@ trigger: always_on
 | 层级 | 技术 | 版本 |
 |------|------|------|
 | 后端框架 | Spring Boot | 3.5.14 |
-| 编程语言 | Java | 21 |
+| 编程语言 | Java | 17+ |
 | ORM | MyBatis（自定义 BaseMapper） | 3.0.5 |
 | 数据库 | MySQL | - |
 | 缓存/会话 | Redis + Redisson | 3.52.0 |

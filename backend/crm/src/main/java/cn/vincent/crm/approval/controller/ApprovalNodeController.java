@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
  * 审批节点操作控制器
  */
 @RestController
-@RequestMapping("/crm/v1/approval/node")
+@RequestMapping("/approval/node")
 @Tag(name = "审批节点操作")
 public class ApprovalNodeController {
 

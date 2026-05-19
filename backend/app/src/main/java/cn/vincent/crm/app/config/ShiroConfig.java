@@ -104,6 +104,8 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/login", "anon");
         // 登录状态检测 - 匿名访问
         filterChainDefinitionMap.put("/is-login", "anon");
+        // 退出登录 - 匿名访问
+        filterChainDefinitionMap.put("/logout", "anon");
         // Swagger 文档 - 匿名访问
         filterChainDefinitionMap.put("/swagger-ui/**", "anon");
         filterChainDefinitionMap.put("/v3/api-docs/**", "anon");

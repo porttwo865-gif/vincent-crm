@@ -84,6 +84,9 @@ importers:
       axios:
         specifier: ^1.9.0
         version: 1.16.1
+      jsencrypt:
+        specifier: ^3.5.4
+        version: 3.5.4
       naive-ui:
         specifier: ^2.41.0
         version: 2.44.1(vue@3.5.34(typescript@5.9.3))
@@ -831,6 +834,9 @@ packages:
 
   js-tokens@9.0.1:
     resolution: {integrity: sha512-mxa9E9ITFOt0ban3j6L5MpjwegGz6lBQmM1IJkWeBZGcMxto50+eWdjC/52xDbS2vy0k7vIMK0Fe2wfL9OQSpQ==}
+
+  jsencrypt@3.5.4:
+    resolution: {integrity: sha512-kNjfYEMNASxrDGsmcSQh/rUTmcoRfSUkxnAz+MMywM8jtGu+fFEZ3nJjHM58zscVnwR0fYmG9sGkTDjqUdpiwA==}
 
   less@4.6.4:
     resolution: {integrity: sha512-OJmO5+HxZLLw0RLzkqaNHzcgEAQG7C0y3aMbwtCzIUFZsLMNNq/1IdAdHEycQ58CwUO3jPTHmoN+tE5I7FQxNg==}
@@ -1744,6 +1750,8 @@ snapshots:
   is-what@4.1.16: {}
 
   js-tokens@9.0.1: {}
+
+  jsencrypt@3.5.4: {}
 
   less@4.6.4:
     dependencies:

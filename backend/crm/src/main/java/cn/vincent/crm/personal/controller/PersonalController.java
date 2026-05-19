@@ -26,7 +26,7 @@ import java.util.List;
  * 个人中心控制器 - 提供个人信息、密码修改、登录日志、消息通知接口
  */
 @RestController
-@RequestMapping("/crm/v1/personal")
+@RequestMapping("/personal")
 @Tag(name = "个人中心")
 public class PersonalController {
 

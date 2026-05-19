@@ -22,7 +22,7 @@ import java.util.List;
  * 跟进计划控制器
  */
 @RestController
-@RequestMapping("/crm/v1/follow/plan")
+@RequestMapping("/follow/plan")
 @Tag(name = "跟进计划管理")
 public class FollowPlanController {
 

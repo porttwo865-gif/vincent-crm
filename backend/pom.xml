@@ -163,6 +163,24 @@
     </dependencyManagement>
 
     <build>
+        <resources>
+            <!-- 包含 Java 源码目录下的 XML 文件（MyBatis Mapper XML） -->
+            <resource>
+                <directory>src/main/java</directory>
+                <includes>
+                    <include>**/*.xml</include>
+                </includes>
+                <filtering>false</filtering>
+            </resource>
+            <!-- 包含标准资源目录 -->
+            <resource>
+                <directory>src/main/resources</directory>
+                <includes>
+                    <include>**/*</include>
+                </includes>
+                <filtering>false</filtering>
+            </resource>
+        </resources>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

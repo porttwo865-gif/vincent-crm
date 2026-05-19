@@ -22,7 +22,7 @@ import java.util.List;
  * 跟进记录控制器
  */
 @RestController
-@RequestMapping("/crm/v1/follow/record")
+@RequestMapping("/follow/record")
 @Tag(name = "跟进记录管理")
 public class FollowRecordController {
 

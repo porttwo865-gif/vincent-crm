@@ -1,9 +1,15 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router';
+import { useMessage } from 'naive-ui';
+import { getRsaKey, login } from '@/api/auth';
+import JSEncrypt from 'jsencrypt';
+import { useUserStore } from '@/store/modules/user';
 
 const { t } = useI18n();
 const router = useRouter();
+const message = useMessage();
+const userStore = useUserStore();
 
 /** 登录表单数据 */
 const loginForm = reactive({
@@ -33,19 +39,49 @@ const rules = computed(() => ({
 
 /**
  * 提交登录
- * 后续对接后端 API，当前 Mock 跳转
+ * 流程：获取 RSA 公钥 → 加密密码 → 调用登录接口
  */
 const handleLogin = async () => {
   try {
     await formRef.value?.validate();
     loading.value = true;
-    // Mock 登录 - 后续替换为真实 API 调用
-    setTimeout(() => {
+
+    // 1. 获取 RSA 公钥
+    const rsaData = await getRsaKey();
+
+    // 2. 用公钥加密密码
+    const encrypt = new JSEncrypt();
+    encrypt.setPublicKey(rsaData.publicKey);
+    const encryptedPassword = encrypt.encrypt(loginForm.password);
+    if (!encryptedPassword) {
+      message.error('密码加密失败，请重试');
       loading.value = false;
-      router.push('/workbench');
-    }, 800);
-  } catch {
-    // 表单校验失败
+      return;
+    }
+
+    // 3. 调用登录接口
+    const loginResult = await login({
+      username: loginForm.account,
+      password: encryptedPassword,
+      rsaKey: rsaData.rsaKey,
+    });
+
+    // 4. 存储用户信息并跳转
+    userStore.setUserInfo({
+      id: loginResult.userId,
+      name: loginResult.name,
+      account: loginResult.username,
+      organizationId: loginResult.organizationId,
+      permissions: loginResult.permissions,
+    });
+    message.success(t('login.success'));
+    router.push('/workbench');
+  } catch (error: any) {
+    // 登录失败提示
+    const errorMsg = error?.message || t('login.failed');
+    message.error(errorMsg);
+  } finally {
+    loading.value = false;
   }
 };
 </script>

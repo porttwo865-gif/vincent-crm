@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
  * 全局搜索控制器
  */
 @RestController
-@RequestMapping("/crm/v1/search")
+@RequestMapping("/search")
 @Tag(name = "全局搜索")
 public class GlobalSearchController {
 

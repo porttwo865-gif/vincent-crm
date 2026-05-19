@@ -29,7 +29,9 @@
     "accountPlaceholder": "Enter account",
     "passwordPlaceholder": "Enter password",
     "accountRequired": "Account is required",
-    "passwordRequired": "Password is required"
+    "passwordRequired": "Password is required",
+    "success": "Login successful",
+    "failed": "Login failed"
   },
   "menu": {
     "workbench": "Workbench",

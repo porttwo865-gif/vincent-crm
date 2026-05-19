@@ -25,7 +25,7 @@ import java.util.List;
  * 审批模板控制器
  */
 @RestController
-@RequestMapping("/crm/v1/approval/template")
+@RequestMapping("/approval/template")
 @Tag(name = "审批模板管理")
 public class ApprovalTemplateController {
 

@@ -19,7 +19,7 @@ import java.util.List;
  * 工作台控制器
  */
 @RestController
-@RequestMapping("/crm/v1/workbench")
+@RequestMapping("/workbench")
 @Tag(name = "工作台")
 public class WorkbenchController {
 
