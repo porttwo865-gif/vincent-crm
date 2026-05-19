@@ -13,16 +13,19 @@ defineEmits<{
   (e: 'toggle'): void;
 }>();
 
+const router = useRouter();
+
 /** 用户下拉菜单选项 */
 const userOptions = [
-  { label: '个人设置', key: 'profile' },
+  { label: '个人中心', key: 'profile' },
   { label: '退出登录', key: 'logout' },
 ];
 
 /** 处理用户菜单选择 */
 const handleUserSelect = (key: string) => {
-  if (key === 'logout') {
-    // 后续对接退出登录逻辑
+  if (key === 'profile') {
+    router.push('/personal');
+  } else if (key === 'logout') {
     window.location.href = '/login';
   }
 };
@@ -56,7 +59,7 @@ const handleUserSelect = (key: string) => {
               </svg>
             </n-icon>
           </template>
-          {{ t('common.confirm') }}
+          张三
         </n-button>
       </n-dropdown>
     </div>

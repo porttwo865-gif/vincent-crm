@@ -39,4 +39,22 @@ CDR.interceptors.response.use(
   }
 );
 
-export default CDR;
+const api = {
+  get<T = any>(url: string, config?: any): Promise<T> {
+    return CDR.get<T>(url, config) as unknown as Promise<T>;
+  },
+  post<T = any>(url: string, data?: any, config?: any): Promise<T> {
+    return CDR.post<T>(url, data, config) as unknown as Promise<T>;
+  },
+  put<T = any>(url: string, data?: any, config?: any): Promise<T> {
+    return CDR.put<T>(url, data, config) as unknown as Promise<T>;
+  },
+  delete<T = any>(url: string, config?: any): Promise<T> {
+    return CDR.delete<T>(url, config) as unknown as Promise<T>;
+  },
+  patch<T = any>(url: string, data?: any, config?: any): Promise<T> {
+    return CDR.patch<T>(url, data, config) as unknown as Promise<T>;
+  },
+};
+
+export default api;
