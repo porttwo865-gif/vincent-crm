@@ -11,6 +11,19 @@ const router = useRouter();
 const message = useMessage();
 const userStore = useUserStore();
 
+/** 后端错误码到可读消息的映射 */
+const backendErrorMap: Record<string, string> = {
+  'user.password.error': '用户名或密码错误',
+  'user.not.exist': '用户不存在',
+  'user.disabled': '用户已被禁用',
+  'rsa.key.expired': '密钥已过期，请重试',
+};
+
+/** 将后端错误码转换为可读消息 */
+function getReadableError(errorMsg: string): string {
+  return backendErrorMap[errorMsg] || errorMsg || t('login.failed');
+}
+
 /** 登录表单数据 */
 const loginForm = reactive({
   account: '',
@@ -49,13 +62,12 @@ const handleLogin = async () => {
     // 1. 获取 RSA 公钥
     const rsaData = await getRsaKey();
 
-    // 2. 用公钥加密密码
+    // 2. 用公钥加密密码（后端返回原始 Base64，JSEncrypt 3.x 可直接使用）
     const encrypt = new JSEncrypt();
     encrypt.setPublicKey(rsaData.publicKey);
     const encryptedPassword = encrypt.encrypt(loginForm.password);
     if (!encryptedPassword) {
       message.error('密码加密失败，请重试');
-      loading.value = false;
       return;
     }
 
@@ -75,11 +87,11 @@ const handleLogin = async () => {
       permissions: loginResult.permissions,
     });
     message.success(t('login.success'));
-    router.push('/workbench');
+    await router.push('/workbench');
   } catch (error: any) {
-    // 登录失败提示
-    const errorMsg = error?.message || t('login.failed');
-    message.error(errorMsg);
+    // 登录失败提示（将后端 i18n key 转换为可读消息）
+    const errorMsg = error?.message || '';
+    message.error(getReadableError(errorMsg));
   } finally {
     loading.value = false;
   }

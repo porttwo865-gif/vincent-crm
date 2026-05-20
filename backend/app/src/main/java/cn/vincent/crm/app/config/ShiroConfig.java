@@ -6,12 +6,12 @@ import cn.vincent.security.UserAuthService;
 import cn.vincent.security.filter.AuthFilter;
 import jakarta.servlet.Filter;
 import org.apache.shiro.realm.Realm;
-import org.apache.shiro.session.mgt.DefaultSessionManager;
 import org.apache.shiro.session.mgt.SessionManager;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
-import org.redisson.api.RedissonClient;
+import org.apache.shiro.web.servlet.SimpleCookie;
+import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -69,17 +69,27 @@ public class ShiroConfig {
     }
 
     /**
-     * Session 管理器 - 使用 Redis 存储 Session
+     * Session 管理器 - 使用 Web 会话管理，Cookie 路径设为 / 确保前端代理场景下 Cookie 可正常发送
      */
     @Bean
-    public SessionManager sessionManager(RedissonClient redissonClient) {
-        DefaultSessionManager sessionManager = new DefaultSessionManager();
+    public SessionManager sessionManager() {
+        DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
         // Session 超时时间：30 分钟
         sessionManager.setGlobalSessionTimeout(1800000L);
         // 定时检查过期 Session
         sessionManager.setSessionValidationSchedulerEnabled(true);
         // 删除过期的 Session
         sessionManager.setDeleteInvalidSessions(true);
+
+        // 配置 Session Cookie：路径设为 / 确保前端通过 Vite 代理（/api/crm/v1）时浏览器能携带 Cookie
+        SimpleCookie sessionIdCookie = new SimpleCookie();
+        sessionIdCookie.setName("JSESSIONID");
+        sessionIdCookie.setPath("/");
+        sessionIdCookie.setHttpOnly(true);
+        sessionIdCookie.setMaxAge(-1); // 浏览器关闭时过期
+        sessionManager.setSessionIdCookie(sessionIdCookie);
+        sessionManager.setSessionIdCookieEnabled(true);
+
         return sessionManager;
     }
 

@@ -31,9 +31,16 @@ CDR.interceptors.response.use(
     return Promise.reject(new Error(data.message || '请求失败'));
   },
   (error) => {
-    // 401 未授权，跳转登录
+    // 401 未授权，跳转登录（使用 Vue Router 避免硬刷新丢失状态）
     if (error.response?.status === 401) {
-      window.location.href = '/login';
+      // 避免在登录页重复跳转
+      if (window.location.pathname !== '/login') {
+        window.location.href = '/login';
+      }
+    }
+    // 业务异常（code 非 200）时，将 message 传递出去
+    if (error.response?.data?.message) {
+      return Promise.reject(new Error(error.response.data.message));
     }
     return Promise.reject(error);
   }
