@@ -142,4 +142,19 @@
         LIMIT #{limit}
     </select>
 
+    <!-- 查询最近跟进记录（分页，不带 LIMIT） -->
+    <select id="selectFollowRecordsForActivity" resultType="cn.vincent.crm.workbench.dto.response.WorkbenchRecentResponse">
+        SELECT biz_type AS bizType,
+               biz_id AS bizId,
+               content AS bizName,
+               'followed' AS action,
+               create_time AS operateTime,
+               create_user AS operatorName
+        FROM crm_follow_record
+        WHERE organization_id = #{orgId}
+          AND create_user = #{userId}
+          AND create_time &gt;= #{sevenDaysAgo}
+        ORDER BY create_time DESC
+    </select>
+
 </mapper>

@@ -157,4 +157,16 @@ public interface ExtWorkbenchMapper {
                                                              @Param("userId") String userId,
                                                              @Param("sevenDaysAgo") Long sevenDaysAgo,
                                                              @Param("limit") int limit);
+
+    /**
+     * 查询最近跟进记录（分页，不带 LIMIT）
+     *
+     * @param orgId        组织 ID
+     * @param userId       当前用户 ID
+     * @param sevenDaysAgo 7天前时间戳
+     * @return 最近跟进记录列表
+     */
+    List<WorkbenchRecentResponse> selectFollowRecordsForActivity(@Param("orgId") String orgId,
+                                                                  @Param("userId") String userId,
+                                                                  @Param("sevenDaysAgo") Long sevenDaysAgo);
 }

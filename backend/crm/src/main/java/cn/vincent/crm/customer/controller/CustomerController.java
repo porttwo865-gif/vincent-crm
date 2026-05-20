@@ -29,7 +29,7 @@ import java.util.List;
  * 客户管理控制器
  */
 @RestController
-@RequestMapping("/account")
+@RequestMapping("/customer")
 @Tag(name = "客户管理")
 public class CustomerController {
 

@@ -166,7 +166,7 @@ public class CustomerController {
 
 1. **通用 CRUD**：使用框架提供的 `BaseMapper<Entity>` 进行标准操作（`selectByPrimaryKey`、`insert`、`update`、`deleteByIds`、`batchInsert` 等）
 2. **自定义 SQL**：创建 `Ext<实体>Mapper` 接口，不继承任何类，标注 `@Mapper`
-3. **XML 映射**：Mapper XML 文件放在与 Java Mapper 同包下
+3. **XML 映射**：Mapper XML 文件统一存放在 `resources/mapper/{module}/` 目录下，按业务模块分类管理
 4. **表名规范**：CamelCase 实体名 → snake_case 表名（如 `CustomerContact` → `customer_contact`）
 5. **列名规范**：camelCase 字段 → snake_case 列名，通过 `map-underscore-to-camel-case=true` 配置
 

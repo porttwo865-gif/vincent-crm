@@ -1,15 +1,21 @@
 package cn.vincent.crm.workbench.service;
 
+import cn.vincent.common.response.PagerWithOption;
+import cn.vincent.crm.workbench.dto.request.WorkbenchActivityPageRequest;
+import cn.vincent.crm.workbench.dto.response.WorkbenchActivityItemResponse;
 import cn.vincent.crm.workbench.dto.response.WorkbenchOverviewResponse;
 import cn.vincent.crm.workbench.dto.response.WorkbenchRecentResponse;
+import cn.vincent.crm.workbench.dto.response.WorkbenchTodoItemResponse;
 import cn.vincent.crm.workbench.dto.response.WorkbenchTodoResponse;
 import cn.vincent.crm.workbench.mapper.ExtWorkbenchMapper;
+import com.github.pagehelper.PageHelper;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
@@ -125,6 +131,65 @@ public class WorkbenchService {
                 orgId, userId, sevenDaysAgo, RECENT_LIMIT);
 
         return list != null ? list : Collections.emptyList();
+    }
+
+    /**
+     * 获取待办事项列表（拆解为条目列表格式）
+     *
+     * @param userId 当前用户 ID
+     * @param orgId  当前组织 ID
+     * @return 待办事项条目列表
+     */
+    public List<WorkbenchTodoItemResponse> getTodoItems(String userId, String orgId) {
+        WorkbenchTodoResponse raw = todo(userId, orgId);
+        List<WorkbenchTodoItemResponse> result = new ArrayList<>();
+        result.add(new WorkbenchTodoItemResponse("follow_plan", "待跟进",
+                raw.getPendingFollowPlans() != null ? raw.getPendingFollowPlans().intValue() : 0));
+        result.add(new WorkbenchTodoItemResponse("approval", "待审批",
+                raw.getPendingApprovals() != null ? raw.getPendingApprovals().intValue() : 0));
+        result.add(new WorkbenchTodoItemResponse("contract_expiring", "即将到期合同",
+                raw.getExpiringContracts() != null ? raw.getExpiringContracts().intValue() : 0));
+        result.add(new WorkbenchTodoItemResponse("payment_overdue", "逾期回款",
+                raw.getOverduePaymentPlans() != null ? raw.getOverduePaymentPlans().intValue() : 0));
+        return result;
+    }
+
+    /**
+     * 获取工作台最近动态（分页）
+     *
+     * @param request 分页请求
+     * @param userId  当前用户 ID
+     * @param orgId   当前组织 ID
+     * @return 分页动态列表
+     */
+    public PagerWithOption<List<WorkbenchActivityItemResponse>> listActivity(
+            WorkbenchActivityPageRequest request, String userId, String orgId) {
+        long now = System.currentTimeMillis();
+        long sevenDaysAgo = now - 7L * 24 * 60 * 60 * 1000;
+
+        int pageNum = Math.max(request.getPageNum(), 1);
+        int pageSize = Math.max(request.getPageSize(), 1);
+
+        PageHelper.startPage(pageNum, pageSize);
+        List<WorkbenchRecentResponse> recentList = extWorkbenchMapper.selectFollowRecordsForActivity(
+                orgId, userId, sevenDaysAgo);
+
+        com.github.pagehelper.Page<WorkbenchRecentResponse> page =
+                (com.github.pagehelper.Page<WorkbenchRecentResponse>) recentList;
+
+        List<WorkbenchActivityItemResponse> activityList = recentList.stream()
+                .map(item -> {
+                    WorkbenchActivityItemResponse resp = new WorkbenchActivityItemResponse();
+                    resp.setId(item.getBizId());
+                    resp.setType(item.getBizType());
+                    resp.setContent(item.getAction() + " " + item.getBizName());
+                    resp.setTime(item.getOperateTime());
+                    resp.setUserName(item.getOperatorName());
+                    return resp;
+                })
+                .toList();
+
+        return PagerWithOption.of(activityList, page.getTotal(), pageNum, pageSize);
     }
 
     /**

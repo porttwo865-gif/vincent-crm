@@ -20,12 +20,16 @@ import cn.vincent.crm.clue.dto.response.ClueListResponse;
 import cn.vincent.crm.clue.mapper.ClueMapper;
 import cn.vincent.crm.clue.mapper.ClueOwnerMapper;
 import cn.vincent.crm.clue.mapper.ExtClueMapper;
+import cn.vincent.crm.clue.mapper.ExtClueOwnerMapper;
 import cn.vincent.crm.system.dto.response.ModuleFieldValueDTO;
 import cn.vincent.crm.system.service.BaseService;
 import cn.vincent.crm.system.service.ModuleFieldValueService;
 import cn.vincent.security.DataScopeService;
 import cn.vincent.security.dto.DeptDataPermissionDTO;
 import com.github.pagehelper.PageHelper;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -52,6 +56,10 @@ public class ClueService {
     /** 线索自定义 Mapper */
     @Resource
     private ExtClueMapper extClueMapper;
+
+    /** 线索负责人变更历史自定义 Mapper */
+    @Resource
+    private ExtClueOwnerMapper extClueOwnerMapper;
 
     /** 线索负责人变更历史 Mapper */
     @Resource
@@ -404,7 +412,10 @@ public class ClueService {
         saveOwnerHistory(clueId, oldOwner, toOwner, ClueConstants.OPERATION_ASSIGN, userId, orgId);
     }
 
-    // ========== 私有方法 ==========
+    /**
+     * Jackson JSON 序列化工具
+     */
+    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
     /**
      * 保存负责人变更历史
@@ -441,10 +452,7 @@ public class ClueService {
      * @return 变更历史列表
      */
     private List<ClueOwner> getOwnerHistory(String clueId) {
-        // 通过 selectByIds 无法直接按 clueId 查询，需要遍历筛选
-        // 实际场景下可添加 ExtClueOwnerMapper，这里暂时返回空列表
-        // TODO: 添加 ExtClueOwnerMapper.selectByClueId 方法
-        return Collections.emptyList();
+        return extClueOwnerMapper.selectByClueId(clueId);
     }
 
     /**
@@ -480,7 +488,7 @@ public class ClueService {
     }
 
     /**
-     * 将 List 转为 JSON 字符串
+     * 将 List 转为 JSON 字符串（使用 Jackson 序列化）
      *
      * @param list 列表
      * @return JSON 字符串
@@ -489,19 +497,16 @@ public class ClueService {
         if (list == null || list.isEmpty()) {
             return null;
         }
-        StringBuilder sb = new StringBuilder("[");
-        for (int i = 0; i < list.size(); i++) {
-            if (i > 0) {
-                sb.append(",");
-            }
-            sb.append("\"").append(list.get(i)).append("\"");
+        try {
+            return OBJECT_MAPPER.writeValueAsString(list);
+        } catch (JsonProcessingException e) {
+            log.error("JSON 序列化失败: {}", e.getMessage(), e);
+            return null;
         }
-        sb.append("]");
-        return sb.toString();
     }
 
     /**
-     * 将 JSON 字符串解析为 List
+     * 将 JSON 字符串解析为 List（使用 Jackson 反序列化）
      *
      * @param json JSON 字符串
      * @return 列表
@@ -510,23 +515,11 @@ public class ClueService {
         if (StringUtils.isBlank(json)) {
             return new ArrayList<>();
         }
-        // 简单解析 JSON 数组格式 ["id1","id2"]
-        json = json.trim();
-        if (json.startsWith("[") && json.endsWith("]")) {
-            json = json.substring(1, json.length() - 1);
-            if (StringUtils.isBlank(json)) {
-                return new ArrayList<>();
-            }
-            String[] parts = json.split(",");
-            List<String> result = new ArrayList<>();
-            for (String part : parts) {
-                String cleaned = part.trim().replace("\"", "");
-                if (StringUtils.isNotBlank(cleaned)) {
-                    result.add(cleaned);
-                }
-            }
-            return result;
+        try {
+            return OBJECT_MAPPER.readValue(json, new TypeReference<List<String>>() {});
+        } catch (JsonProcessingException e) {
+            log.error("JSON 解析失败: {}", e.getMessage(), e);
+            return new ArrayList<>();
         }
-        return new ArrayList<>();
     }
 }

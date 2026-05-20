@@ -1,0 +1,32 @@
+server:
+  servlet:
+    context-path: /crm/v1
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    # Testcontainers 动态注入，BaseTest 中通过 @DynamicPropertySource 配置
+  flyway:
+    enabled: true
+    locations: classpath:migration
+    table: vincent_crm_version
+    baseline-on-migrate: true
+    encoding: UTF-8
+  data:
+    redis:
+      # BaseTest 中通过 @DynamicPropertySource 配置
+      timeout: 5000ms
+
+# MyBatis 配置
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true
+    auto-mapping-behavior: full
+  type-aliases-package: cn.vincent.crm.**.domain
+  mapper-locations: classpath*:cn/vincent/crm/**/mapper/*.xml
+
+# 日志配置
+logging:
+  level:
+    cn.vincent: DEBUG
+    org.testcontainers: INFO
