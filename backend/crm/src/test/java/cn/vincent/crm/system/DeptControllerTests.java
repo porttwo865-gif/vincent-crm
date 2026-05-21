@@ -19,7 +19,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * 系统部门管理控制器集成测试
  * <p>
  * 测试部门的增删改查及树形结构查询等接口。
- * 接口路径：/department/*（DepartmentController）
+ * 接口路径：/system/department/*（DepartmentController）
  */
 @AutoConfigureMockMvc
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -40,7 +40,7 @@ class DeptControllerTests extends BaseTest {
         request.setSort(1);
 
         // 执行请求并断言响应
-        String responseBody = mockMvc.perform(post("/crm/v1/department/add")
+        String responseBody = mockMvc.perform(post("/crm/v1/system/department/add")
                         .contentType(MediaType.APPLICATION_JSON)
                         .cookie(new jakarta.servlet.http.Cookie("JSESSIONID",
                                 authCookie != null ? authCookie.replace("JSESSIONID=", "") : ""))
@@ -64,7 +64,7 @@ class DeptControllerTests extends BaseTest {
     @Order(2)
     void testGetDeptTree_ShouldReturnTreeList() throws Exception {
         // 执行请求并断言响应为数组格式（树形结构）
-        mockMvc.perform(get("/crm/v1/department/tree")
+        mockMvc.perform(get("/crm/v1/system/department/tree")
                         .cookie(new jakarta.servlet.http.Cookie("JSESSIONID",
                                 authCookie != null ? authCookie.replace("JSESSIONID=", "") : "")))
                 .andDo(print())
@@ -91,7 +91,7 @@ class DeptControllerTests extends BaseTest {
         updateRequest.setSort(2);
 
         // 执行更新并断言
-        mockMvc.perform(post("/crm/v1/department/update")
+        mockMvc.perform(post("/crm/v1/system/department/update")
                         .contentType(MediaType.APPLICATION_JSON)
                         .cookie(new jakarta.servlet.http.Cookie("JSESSIONID",
                                 authCookie != null ? authCookie.replace("JSESSIONID=", "") : ""))
@@ -113,7 +113,7 @@ class DeptControllerTests extends BaseTest {
         request.setName("待删除部门-" + System.currentTimeMillis());
         request.setSort(99);
 
-        String createResponse = mockMvc.perform(post("/crm/v1/department/add")
+        String createResponse = mockMvc.perform(post("/crm/v1/system/department/add")
                         .contentType(MediaType.APPLICATION_JSON)
                         .cookie(new jakarta.servlet.http.Cookie("JSESSIONID",
                                 authCookie != null ? authCookie.replace("JSESSIONID=", "") : ""))
@@ -126,7 +126,7 @@ class DeptControllerTests extends BaseTest {
         String deleteId = objectMapper.readTree(createResponse).at("/data/id").asText();
 
         // 执行删除
-        mockMvc.perform(get("/crm/v1/department/delete/" + deleteId)
+        mockMvc.perform(get("/crm/v1/system/department/delete/" + deleteId)
                         .cookie(new jakarta.servlet.http.Cookie("JSESSIONID",
                                 authCookie != null ? authCookie.replace("JSESSIONID=", "") : "")))
                 .andDo(print())
@@ -144,7 +144,7 @@ class DeptControllerTests extends BaseTest {
         request.setSort(1);
         // name 故意不填
 
-        mockMvc.perform(post("/crm/v1/department/add")
+        mockMvc.perform(post("/crm/v1/system/department/add")
                         .contentType(MediaType.APPLICATION_JSON)
                         .cookie(new jakarta.servlet.http.Cookie("JSESSIONID",
                                 authCookie != null ? authCookie.replace("JSESSIONID=", "") : ""))
@@ -161,7 +161,7 @@ class DeptControllerTests extends BaseTest {
     @Order(6)
     void testGetDeptTree_WhenNotAuthenticated_ShouldReturn401() throws Exception {
         // 不携带认证 Cookie
-        mockMvc.perform(get("/crm/v1/department/tree"))
+        mockMvc.perform(get("/crm/v1/system/department/tree"))
                 .andDo(print())
                 .andExpect(status().isUnauthorized());
     }

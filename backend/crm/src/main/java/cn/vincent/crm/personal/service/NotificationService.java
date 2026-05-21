@@ -4,7 +4,6 @@ import cn.vincent.common.response.PagerWithOption;
 import cn.vincent.common.util.BeanUtils;
 import cn.vincent.crm.personal.domain.Notification;
 import cn.vincent.crm.personal.dto.request.NotificationPageRequest;
-import cn.vincent.crm.personal.dto.request.NotificationReadRequest;
 import cn.vincent.crm.personal.dto.response.NotificationListResponse;
 import cn.vincent.crm.personal.dto.response.UnreadCountResponse;
 import cn.vincent.crm.personal.mapper.ExtNotificationMapper;
@@ -49,13 +48,22 @@ public class NotificationService {
     }
 
     /**
-     * 批量标记通知为已读
+     * 标记单条通知为已读
      *
-     * @param request 标记已读请求
-     * @param userId  当前用户 ID
+     * @param id     通知 ID
+     * @param userId 当前用户 ID
      */
-    public void markRead(NotificationReadRequest request, String userId) {
-        extNotificationMapper.batchMarkRead(request.getIds(), userId);
+    public void markRead(String id, String userId) {
+        extNotificationMapper.batchMarkRead(List.of(id), userId);
+    }
+
+    /**
+     * 标记当前用户所有通知为已读
+     *
+     * @param userId 当前用户 ID
+     */
+    public void markAllRead(String userId) {
+        extNotificationMapper.markAllRead(userId);
     }
 
     /**

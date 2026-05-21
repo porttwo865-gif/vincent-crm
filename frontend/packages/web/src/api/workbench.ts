@@ -1,14 +1,16 @@
 import CDR from './http';
 import type { PagerResult } from '@vincent-crm/shared';
 
-/** 工作台统计卡片 */
+/** 工作台统计卡片（字段名与后端 WorkbenchOverviewResponse 对齐） */
 export interface WorkbenchStats {
   clueCount: number;
   customerCount: number;
   opportunityCount: number;
   opportunityAmount: number;
-  monthContractCount: number;
-  monthContractAmount: number;
+  /** 本月新签合同数 */
+  contractCount: number;
+  /** 本月合同总金额 */
+  contractAmount: number;
 }
 
 /** 待办事项 */

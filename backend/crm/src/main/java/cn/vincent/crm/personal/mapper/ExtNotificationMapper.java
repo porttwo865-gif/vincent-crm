@@ -37,4 +37,11 @@ public interface ExtNotificationMapper {
      * @param userId 当前用户 ID（防止越权）
      */
     void batchMarkRead(@Param("ids") List<String> ids, @Param("userId") String userId);
+
+    /**
+     * 将指定用户的所有未读通知标记为已读
+     *
+     * @param userId 当前用户 ID
+     */
+    void markAllRead(@Param("userId") String userId);
 }

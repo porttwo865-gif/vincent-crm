@@ -51,15 +51,28 @@ export interface CustomerSaveRequest {
   remark?: string;
 }
 
-/** 客户联系人保存 */
-export interface ContactSaveRequest {
-  id?: string;
+/** 新增联系人请求 */
+export interface CustomerContactAddRequest {
   customerId: string;
   name: string;
   phone?: string;
   email?: string;
   position?: string;
-  isPrimary: boolean;
+  department?: string;
+  isPrimary?: boolean;
+  remark?: string;
+}
+
+/** 更新联系人请求 */
+export interface CustomerContactUpdateRequest {
+  id: string;
+  name?: string;
+  phone?: string;
+  email?: string;
+  position?: string;
+  department?: string;
+  isPrimary?: boolean;
+  remark?: string;
 }
 
 /** 客户分页列表 */
@@ -97,14 +110,19 @@ export function claimCustomer(id: string) {
   return CDR.post<void>(`/customer/claim/${id}`);
 }
 
-/** 获取客户联系人 */
-export function getCustomerContacts(customerId: string) {
+/** 获取客户联系人列表 */
+export function getCustomerContactList(customerId: string) {
   return CDR.get<CustomerContact[]>(`/customer/contact/list/${customerId}`);
 }
 
-/** 保存联系人 */
-export function saveCustomerContact(data: ContactSaveRequest) {
-  return CDR.post<CustomerContact>('/customer/contact/save', data);
+/** 新增联系人 */
+export function addCustomerContact(data: CustomerContactAddRequest) {
+  return CDR.post<CustomerContact>('/customer/contact/add', data);
+}
+
+/** 更新联系人 */
+export function updateCustomerContact(data: CustomerContactUpdateRequest) {
+  return CDR.post<CustomerContact>('/customer/contact/update', data);
 }
 
 /** 删除联系人 */

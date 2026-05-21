@@ -38,7 +38,7 @@ const columns = [
   { title: '阶段', key: 'stage', width: 120, render: (row: Opportunity) => h(NTag, { size: 'small', type: row.stage === 's5' ? 'success' : row.stage === 's6' ? 'error' : 'info' }, { default: () => stageMap.value[row.stage]?.name || row.stage }) },
   { title: '负责人', key: 'ownerName', width: 100 },
   { title: '预计成交', key: 'expectedCloseDate', width: 120, render: (row: Opportunity) => row.expectedCloseDate ? formatDate(row.expectedCloseDate, 'YYYY-MM-DD') : '-' },
-  { title: '操作', key: 'actions', width: 180, fixed: 'right', render: (row: Opportunity) => h(NSpace, { size: 4 }, { default: () => [
+  { title: '操作', key: 'actions', width: 180, fixed: 'right' as const, render: (row: Opportunity) => h(NSpace, { size: 4 }, { default: () => [
     h(NButton, { text: true, type: 'primary', size: 'small', onClick: () => handleEdit(row) }, { default: () => '编辑' }),
     h(NButton, { text: true, type: 'info', size: 'small', onClick: () => handleChangeStage(row) }, { default: () => '变更阶段' }),
     h(NButton, { text: true, type: 'error', size: 'small', onClick: () => handleDelete(row) }, { default: () => '删除' }),

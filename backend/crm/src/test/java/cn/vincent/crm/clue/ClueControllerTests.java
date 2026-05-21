@@ -41,7 +41,7 @@ class ClueControllerTests extends BaseTest {
         request.setPhone("13800138001");
 
         // 执行请求并断言响应
-        String responseBody = mockMvc.perform(post("/crm/v1/lead/add")
+        String responseBody = mockMvc.perform(post("/crm/v1/clue/add")
                         .contentType(MediaType.APPLICATION_JSON)
                         .cookie(new jakarta.servlet.http.Cookie("JSESSIONID",
                                 authCookie != null ? authCookie.replace("JSESSIONID=", "") : ""))
@@ -70,7 +70,7 @@ class ClueControllerTests extends BaseTest {
         request.setPageSize(10);
 
         // 执行请求并断言分页格式
-        mockMvc.perform(post("/crm/v1/lead/page")
+        mockMvc.perform(post("/crm/v1/clue/page")
                         .contentType(MediaType.APPLICATION_JSON)
                         .cookie(new jakarta.servlet.http.Cookie("JSESSIONID",
                                 authCookie != null ? authCookie.replace("JSESSIONID=", "") : ""))
@@ -93,7 +93,7 @@ class ClueControllerTests extends BaseTest {
         }
 
         // 执行详情查询
-        mockMvc.perform(get("/crm/v1/lead/get/" + clueId)
+        mockMvc.perform(get("/crm/v1/clue/get/" + clueId)
                         .cookie(new jakarta.servlet.http.Cookie("JSESSIONID",
                                 authCookie != null ? authCookie.replace("JSESSIONID=", "") : "")))
                 .andDo(print())
@@ -120,7 +120,7 @@ class ClueControllerTests extends BaseTest {
         updateRequest.setPhone("13900139002");
 
         // 执行更新并断言
-        mockMvc.perform(post("/crm/v1/lead/update")
+        mockMvc.perform(post("/crm/v1/clue/update")
                         .contentType(MediaType.APPLICATION_JSON)
                         .cookie(new jakarta.servlet.http.Cookie("JSESSIONID",
                                 authCookie != null ? authCookie.replace("JSESSIONID=", "") : ""))
@@ -141,7 +141,7 @@ class ClueControllerTests extends BaseTest {
         ClueAddRequest request = new ClueAddRequest();
         request.setName("待删除线索-" + System.currentTimeMillis());
 
-        String createResponse = mockMvc.perform(post("/crm/v1/lead/add")
+        String createResponse = mockMvc.perform(post("/crm/v1/clue/add")
                         .contentType(MediaType.APPLICATION_JSON)
                         .cookie(new jakarta.servlet.http.Cookie("JSESSIONID",
                                 authCookie != null ? authCookie.replace("JSESSIONID=", "") : ""))
@@ -154,7 +154,7 @@ class ClueControllerTests extends BaseTest {
         String deleteId = objectMapper.readTree(createResponse).at("/data/id").asText();
 
         // 执行删除
-        mockMvc.perform(get("/crm/v1/lead/delete/" + deleteId)
+        mockMvc.perform(get("/crm/v1/clue/delete/" + deleteId)
                         .cookie(new jakarta.servlet.http.Cookie("JSESSIONID",
                                 authCookie != null ? authCookie.replace("JSESSIONID=", "") : "")))
                 .andDo(print())
@@ -172,7 +172,7 @@ class ClueControllerTests extends BaseTest {
         request.setContact("王五");
 
         // 期望返回 200 + code=422 校验错误
-        mockMvc.perform(post("/crm/v1/lead/add")
+        mockMvc.perform(post("/crm/v1/clue/add")
                         .contentType(MediaType.APPLICATION_JSON)
                         .cookie(new jakarta.servlet.http.Cookie("JSESSIONID",
                                 authCookie != null ? authCookie.replace("JSESSIONID=", "") : ""))
@@ -193,7 +193,7 @@ class ClueControllerTests extends BaseTest {
         request.setPageSize(10);
 
         // 不携带认证 Cookie
-        mockMvc.perform(post("/crm/v1/lead/page")
+        mockMvc.perform(post("/crm/v1/clue/page")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andDo(print())

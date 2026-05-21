@@ -31,7 +31,7 @@ import java.util.List;
  * 线索管理控制器
  */
 @RestController
-@RequestMapping("/lead")
+@RequestMapping("/clue")
 @Tag(name = "线索管理")
 public class ClueController {
 

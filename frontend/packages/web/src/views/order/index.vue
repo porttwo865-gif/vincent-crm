@@ -31,7 +31,7 @@ const columns = [
   { title: '状态', key: 'status', width: 100, render: (row: Order) => { const s = statusMap[row.status]; return h(NTag, { size: 'small', type: s?.type as any }, { default: () => s?.label || row.status }); } },
   { title: '订单日期', key: 'orderDate', width: 120, render: (row: Order) => formatDate(row.orderDate, 'YYYY-MM-DD') },
   { title: '负责人', key: 'ownerName', width: 100 },
-  { title: '操作', key: 'actions', width: 180, fixed: 'right', render: (row: Order) => h(NSpace, { size: 4 }, { default: () => [
+  { title: '操作', key: 'actions', width: 180, fixed: 'right' as const, render: (row: Order) => h(NSpace, { size: 4 }, { default: () => [
     h(NButton, { text: true, type: 'primary', size: 'small', onClick: () => handleEdit(row) }, { default: () => '编辑' }),
     h(NButton, { text: true, type: 'warning', size: 'small', onClick: () => handleChangeStatus(row) }, { default: () => '变更状态' }),
     h(NButton, { text: true, type: 'error', size: 'small', onClick: () => handleDelete(row) }, { default: () => '删除' }),

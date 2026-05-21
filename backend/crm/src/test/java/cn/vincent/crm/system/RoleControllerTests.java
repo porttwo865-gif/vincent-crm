@@ -19,7 +19,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * 系统角色管理控制器集成测试
  * <p>
  * 测试角色的增删改查及权限分配等接口。
- * 接口路径：/role/*
+ * 接口路径：/system/role/*
  */
 @AutoConfigureMockMvc
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -41,7 +41,7 @@ class RoleControllerTests extends BaseTest {
         request.setDataScope("all");
 
         // 执行请求并断言响应
-        String responseBody = mockMvc.perform(post("/crm/v1/role/add")
+        String responseBody = mockMvc.perform(post("/crm/v1/system/role/add")
                         .contentType(MediaType.APPLICATION_JSON)
                         .cookie(new jakarta.servlet.http.Cookie("JSESSIONID",
                                 authCookie != null ? authCookie.replace("JSESSIONID=", "") : ""))
@@ -65,7 +65,7 @@ class RoleControllerTests extends BaseTest {
     @Order(2)
     void testListRole_ShouldReturnRoleList() throws Exception {
         // 执行请求并断言响应为数组格式
-        mockMvc.perform(get("/crm/v1/role/list")
+        mockMvc.perform(get("/crm/v1/system/role/list")
                         .cookie(new jakarta.servlet.http.Cookie("JSESSIONID",
                                 authCookie != null ? authCookie.replace("JSESSIONID=", "") : "")))
                 .andDo(print())
@@ -86,7 +86,7 @@ class RoleControllerTests extends BaseTest {
         }
 
         // 执行权限查询
-        mockMvc.perform(get("/crm/v1/role/permissions/" + roleId)
+        mockMvc.perform(get("/crm/v1/system/role/permissions/" + roleId)
                         .cookie(new jakarta.servlet.http.Cookie("JSESSIONID",
                                 authCookie != null ? authCookie.replace("JSESSIONID=", "") : "")))
                 .andDo(print())
@@ -114,7 +114,7 @@ class RoleControllerTests extends BaseTest {
         updateRequest.setDataScope("self");
 
         // 执行更新并断言
-        mockMvc.perform(post("/crm/v1/role/update")
+        mockMvc.perform(post("/crm/v1/system/role/update")
                         .contentType(MediaType.APPLICATION_JSON)
                         .cookie(new jakarta.servlet.http.Cookie("JSESSIONID",
                                 authCookie != null ? authCookie.replace("JSESSIONID=", "") : ""))
@@ -136,7 +136,7 @@ class RoleControllerTests extends BaseTest {
         request.setName("待删除角色-" + System.currentTimeMillis());
         request.setDescription("待删除");
 
-        String createResponse = mockMvc.perform(post("/crm/v1/role/add")
+        String createResponse = mockMvc.perform(post("/crm/v1/system/role/add")
                         .contentType(MediaType.APPLICATION_JSON)
                         .cookie(new jakarta.servlet.http.Cookie("JSESSIONID",
                                 authCookie != null ? authCookie.replace("JSESSIONID=", "") : ""))
@@ -149,7 +149,7 @@ class RoleControllerTests extends BaseTest {
         String deleteId = objectMapper.readTree(createResponse).at("/data/id").asText();
 
         // 执行删除
-        mockMvc.perform(get("/crm/v1/role/delete/" + deleteId)
+        mockMvc.perform(get("/crm/v1/system/role/delete/" + deleteId)
                         .cookie(new jakarta.servlet.http.Cookie("JSESSIONID",
                                 authCookie != null ? authCookie.replace("JSESSIONID=", "") : "")))
                 .andDo(print())
@@ -167,7 +167,7 @@ class RoleControllerTests extends BaseTest {
         request.setDescription("没有名称的角色");
         // name 故意不填
 
-        mockMvc.perform(post("/crm/v1/role/add")
+        mockMvc.perform(post("/crm/v1/system/role/add")
                         .contentType(MediaType.APPLICATION_JSON)
                         .cookie(new jakarta.servlet.http.Cookie("JSESSIONID",
                                 authCookie != null ? authCookie.replace("JSESSIONID=", "") : ""))
@@ -184,7 +184,7 @@ class RoleControllerTests extends BaseTest {
     @Order(7)
     void testListRole_WhenNotAuthenticated_ShouldReturn401() throws Exception {
         // 不携带认证 Cookie
-        mockMvc.perform(get("/crm/v1/role/list"))
+        mockMvc.perform(get("/crm/v1/system/role/list"))
                 .andDo(print())
                 .andExpect(status().isUnauthorized());
     }

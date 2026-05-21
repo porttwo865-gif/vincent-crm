@@ -22,7 +22,7 @@ const columns = [
   { title: '角色名称', key: 'name' },
   { title: '角色编码', key: 'code', width: 140 },
   { title: '描述', key: 'description', ellipsis: { tooltip: true } },
-  { title: '操作', key: 'actions', width: 180, fixed: 'right', render: (row: SystemRole) => h(NSpace, { size: 4 }, { default: () => [
+  { title: '操作', key: 'actions', width: 180, fixed: 'right' as const, render: (row: SystemRole) => h(NSpace, { size: 4 }, { default: () => [
     h(NButton, { text: true, type: 'primary', size: 'small', onClick: () => handleEdit(row) }, { default: () => '编辑' }),
     h(NButton, { text: true, type: 'info', size: 'small', onClick: () => handleConfigPermission(row) }, { default: () => '权限配置' }),
     h(NButton, { text: true, type: 'error', size: 'small', onClick: () => handleDelete(row) }, { default: () => '删除' }),

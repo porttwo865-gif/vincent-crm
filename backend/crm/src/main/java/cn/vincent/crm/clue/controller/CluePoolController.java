@@ -24,7 +24,7 @@ import java.util.List;
  * 线索池控制器
  */
 @RestController
-@RequestMapping("/lead-pool")
+@RequestMapping("/clue-pool")
 @Tag(name = "线索池")
 public class CluePoolController {
 

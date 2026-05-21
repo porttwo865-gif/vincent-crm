@@ -46,9 +46,7 @@ const handleMenuClick = (key: string) => {
 watch(
   () => router.currentRoute.value.path,
   (path) => {
-    // 子路由匹配父菜单，如 /system/user -> /system
-    const parentMatch = menuOptions.value.find(m => m.children?.some((c: any) => path.startsWith(c.key)));
-    activeKey.value = parentMatch ? parentMatch.key as string : path;
+    activeKey.value = path;
   },
   { immediate: true }
 );

@@ -12,8 +12,8 @@ const stats = ref<WorkbenchStats>({
   customerCount: 0,
   opportunityCount: 0,
   opportunityAmount: 0,
-  monthContractCount: 0,
-  monthContractAmount: 0,
+  contractCount: 0,
+  contractAmount: 0,
 });
 
 /** 待办事项 */
@@ -28,7 +28,7 @@ const statCards = computed(() => [
   { label: '线索数', value: stats.value.clueCount, color: '#1E88E5', icon: 'M9.5 2c-1.82 0-3.53.5-5 1.35l2.99 2.99A6.47 6.47 0 009.5 6C13.09 6 16 8.91 16 12.5c0 .73-.13 1.43-.35 2.08l2.99 2.99C19.5 16.11 20 14.39 20 12.5 20 6.81 15.19 2 9.5 2z' },
   { label: '客户数', value: stats.value.customerCount, color: '#4CAF50', icon: 'M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z' },
   { label: '商机数 / 金额', value: `${stats.value.opportunityCount} / ¥${(stats.value.opportunityAmount / 10000).toFixed(1)}万`, color: '#FF9800', icon: 'M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z' },
-  { label: '本月合同数 / 金额', value: `${stats.value.monthContractCount} / ¥${(stats.value.monthContractAmount / 10000).toFixed(1)}万`, color: '#9C27B0', icon: 'M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm-1 7V3.5L18.5 9H13z' },
+  { label: '本月合同数 / 金额', value: `${stats.value.contractCount} / ¥${((stats.value.contractAmount ?? 0) / 10000).toFixed(1)}万`, color: '#9C27B0', icon: 'M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm-1 7V3.5L18.5 9H13z' },
 ]);
 
 /** 待办类型映射 */
@@ -55,8 +55,8 @@ const loadData = async () => {
       customerCount: 86,
       opportunityCount: 45,
       opportunityAmount: 3600000,
-      monthContractCount: 12,
-      monthContractAmount: 1800000,
+      contractCount: 12,
+      contractAmount: 1800000,
     };
     todoList.value = [
       { id: '1', type: 'follow', title: '跟进张三', count: 5 },

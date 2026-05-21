@@ -47,7 +47,7 @@ class UserControllerTests extends BaseTest {
         request.setPhone("13700137001");
 
         // 执行请求并断言响应
-        String responseBody = mockMvc.perform(post("/crm/v1/user/add")
+        String responseBody = mockMvc.perform(post("/crm/v1/system/user/add")
                         .contentType(MediaType.APPLICATION_JSON)
                         .cookie(new jakarta.servlet.http.Cookie("JSESSIONID",
                                 authCookie != null ? authCookie.replace("JSESSIONID=", "") : ""))
@@ -77,7 +77,7 @@ class UserControllerTests extends BaseTest {
         request.setPageSize(10);
 
         // 执行请求并断言分页格式
-        mockMvc.perform(post("/crm/v1/user/page")
+        mockMvc.perform(post("/crm/v1/system/user/page")
                         .contentType(MediaType.APPLICATION_JSON)
                         .cookie(new jakarta.servlet.http.Cookie("JSESSIONID",
                                 authCookie != null ? authCookie.replace("JSESSIONID=", "") : ""))
@@ -104,7 +104,7 @@ class UserControllerTests extends BaseTest {
         request.setPageSize(10);
         request.setKeyword("test_user");
 
-        mockMvc.perform(post("/crm/v1/user/page")
+        mockMvc.perform(post("/crm/v1/system/user/page")
                         .contentType(MediaType.APPLICATION_JSON)
                         .cookie(new jakarta.servlet.http.Cookie("JSESSIONID",
                                 authCookie != null ? authCookie.replace("JSESSIONID=", "") : ""))
@@ -133,7 +133,7 @@ class UserControllerTests extends BaseTest {
         updateRequest.setPhone("18888888888");
 
         // 执行更新并断言
-        mockMvc.perform(post("/crm/v1/user/update")
+        mockMvc.perform(post("/crm/v1/system/user/update")
                         .contentType(MediaType.APPLICATION_JSON)
                         .cookie(new jakarta.servlet.http.Cookie("JSESSIONID",
                                 authCookie != null ? authCookie.replace("JSESSIONID=", "") : ""))
@@ -155,7 +155,7 @@ class UserControllerTests extends BaseTest {
         }
 
         // 执行禁用
-        mockMvc.perform(get("/crm/v1/user/disable/" + newUserId)
+        mockMvc.perform(get("/crm/v1/system/user/disable/" + newUserId)
                         .cookie(new jakarta.servlet.http.Cookie("JSESSIONID",
                                 authCookie != null ? authCookie.replace("JSESSIONID=", "") : "")))
                 .andDo(print())
@@ -174,7 +174,7 @@ class UserControllerTests extends BaseTest {
         }
 
         // 执行启用
-        mockMvc.perform(get("/crm/v1/user/enable/" + newUserId)
+        mockMvc.perform(get("/crm/v1/system/user/enable/" + newUserId)
                         .cookie(new jakarta.servlet.http.Cookie("JSESSIONID",
                                 authCookie != null ? authCookie.replace("JSESSIONID=", "") : "")))
                 .andDo(print())
@@ -193,7 +193,7 @@ class UserControllerTests extends BaseTest {
         request.setPassword("Test@123456");
         request.setName("待删除用户");
 
-        String createResponse = mockMvc.perform(post("/crm/v1/user/add")
+        String createResponse = mockMvc.perform(post("/crm/v1/system/user/add")
                         .contentType(MediaType.APPLICATION_JSON)
                         .cookie(new jakarta.servlet.http.Cookie("JSESSIONID",
                                 authCookie != null ? authCookie.replace("JSESSIONID=", "") : ""))
@@ -206,7 +206,7 @@ class UserControllerTests extends BaseTest {
         String deleteId = objectMapper.readTree(createResponse).at("/data/id").asText();
 
         // 执行删除
-        mockMvc.perform(get("/crm/v1/user/delete/" + deleteId)
+        mockMvc.perform(get("/crm/v1/system/user/delete/" + deleteId)
                         .cookie(new jakarta.servlet.http.Cookie("JSESSIONID",
                                 authCookie != null ? authCookie.replace("JSESSIONID=", "") : "")))
                 .andDo(print())
@@ -224,7 +224,7 @@ class UserControllerTests extends BaseTest {
         request.setPassword("Test@123456");
         request.setName("测试用户");
 
-        mockMvc.perform(post("/crm/v1/user/add")
+        mockMvc.perform(post("/crm/v1/system/user/add")
                         .contentType(MediaType.APPLICATION_JSON)
                         .cookie(new jakarta.servlet.http.Cookie("JSESSIONID",
                                 authCookie != null ? authCookie.replace("JSESSIONID=", "") : ""))
@@ -246,7 +246,7 @@ class UserControllerTests extends BaseTest {
         request.setPassword("Test@123456");
         request.setName("测试用户");
 
-        mockMvc.perform(post("/crm/v1/user/add")
+        mockMvc.perform(post("/crm/v1/system/user/add")
                         .contentType(MediaType.APPLICATION_JSON)
                         .cookie(new jakarta.servlet.http.Cookie("JSESSIONID",
                                 authCookie != null ? authCookie.replace("JSESSIONID=", "") : ""))

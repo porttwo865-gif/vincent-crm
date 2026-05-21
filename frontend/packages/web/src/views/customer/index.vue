@@ -28,7 +28,7 @@ const columns = [
   { title: '等级', key: 'level', width: 80 },
   { title: '负责人', key: 'ownerName', width: 100 },
   { title: '创建时间', key: 'createTime', width: 160, render: (row: Customer) => formatDate(row.createTime, 'YYYY-MM-DD HH:mm') },
-  { title: '操作', key: 'actions', width: 180, fixed: 'right', render: (row: Customer) => h(NSpace, { size: 4 }, { default: () => [
+  { title: '操作', key: 'actions', width: 180, fixed: 'right' as const, render: (row: Customer) => h(NSpace, { size: 4 }, { default: () => [
     h(NButton, { text: true, type: 'primary', size: 'small', onClick: () => handleEdit(row) }, { default: () => '编辑' }),
     h(NButton, { text: true, type: 'info', size: 'small', onClick: () => router.push(`/customer/detail/${row.id}`) }, { default: () => '详情' }),
     h(NButton, { text: true, type: 'error', size: 'small', onClick: () => handleDelete(row) }, { default: () => '删除' }),

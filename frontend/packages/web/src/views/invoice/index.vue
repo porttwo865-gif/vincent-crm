@@ -30,7 +30,7 @@ const columns = [
   { title: '类型', key: 'type', width: 80 },
   { title: '状态', key: 'status', width: 100, render: (row: Invoice) => { const s = statusMap[row.status]; return h(NTag, { size: 'small', type: s?.type as any }, { default: () => s?.label || row.status }); } },
   { title: '开票日期', key: 'invoiceDate', width: 120, render: (row: Invoice) => formatDate(row.invoiceDate, 'YYYY-MM-DD') },
-  { title: '操作', key: 'actions', width: 200, fixed: 'right', render: (row: Invoice) => h(NSpace, { size: 4 }, { default: () => [
+  { title: '操作', key: 'actions', width: 200, fixed: 'right' as const, render: (row: Invoice) => h(NSpace, { size: 4 }, { default: () => [
     h(NButton, { text: true, type: 'primary', size: 'small', onClick: () => handleEdit(row) }, { default: () => '编辑' }),
     ...(row.status === 'pending' ? [h(NButton, { text: true, type: 'success', size: 'small', onClick: () => handleIssue(row) }, { default: () => '开票' })] : []),
     ...(row.status === 'issued' ? [h(NButton, { text: true, type: 'warning', size: 'small', onClick: () => handleVoid(row) }, { default: () => '作废' })] : []),

@@ -21,7 +21,7 @@ import java.util.List;
  * 角色管理控制器
  */
 @RestController
-@RequestMapping("/role")
+@RequestMapping("/system/role")
 @Tag(name = "角色管理")
 public class RoleController {
 

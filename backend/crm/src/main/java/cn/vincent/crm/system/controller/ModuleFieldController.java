@@ -21,7 +21,7 @@ import java.util.List;
  * 模块字段管理控制器
  */
 @RestController
-@RequestMapping("/module-field")
+@RequestMapping("/system/module-field")
 @Tag(name = "模块字段管理")
 public class ModuleFieldController {
 

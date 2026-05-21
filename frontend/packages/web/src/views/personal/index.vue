@@ -1,9 +1,8 @@
 <script setup lang="ts">
-import { h } from 'vue';
-import { useMessage } from 'naive-ui';
+// NTag 供 h() 渲染函数使用，组件自动导入仅覆盖模板，脚本中需显式导入
+import { NTag } from 'naive-ui';
 import { formatDate } from '@/utils';
 import type { LoginLog, Notification } from '@/api/personal';
-import { getLoginLogs, getNotifications, markNotificationRead, markAllNotificationsRead } from '@/api/personal';
 
 const message = useMessage();
 const activeTab = ref('profile');

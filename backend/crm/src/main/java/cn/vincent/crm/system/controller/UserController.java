@@ -24,7 +24,7 @@ import java.util.List;
  * 用户管理控制器
  */
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/system/user")
 @Tag(name = "用户管理")
 public class UserController {
 

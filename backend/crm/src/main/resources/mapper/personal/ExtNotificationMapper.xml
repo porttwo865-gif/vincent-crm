@@ -35,4 +35,12 @@
         </foreach>
     </update>
 
+    <!-- 将指定用户所有未读通知标记为已读 -->
+    <update id="markAllRead">
+        UPDATE crm_notification
+        SET read_status = 'read'
+        WHERE user_id = #{userId}
+          AND read_status = 'unread'
+    </update>
+
 </mapper>

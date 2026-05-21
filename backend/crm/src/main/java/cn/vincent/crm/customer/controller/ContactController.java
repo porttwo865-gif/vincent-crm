@@ -21,7 +21,7 @@ import java.util.List;
  * 联系人管理控制器
  */
 @RestController
-@RequestMapping("/contact")
+@RequestMapping("/customer/contact")
 @Tag(name = "联系人管理")
 public class ContactController {
 

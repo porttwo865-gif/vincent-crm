@@ -45,6 +45,7 @@
 19. 前后端联调修复（context-path + proxy + ResponseWrapper + Mapper XML + 登录对接）
 20. 生产环境 Docker 镜像构建、CI/CD 配置、Nginx 配置及部署文档
 21. 修复登录流程（Shiro Session Cookie 路径问题）
+22. P1 联调修复：修复前后端 API 路径不匹配（线索模块 `/lead` → `/clue`、系统管理添加 `/system` 前缀、个人中心端点对齐、联系人模块路径与方法对齐）（2026-05-20）
 
 ## Git 提交历史
 

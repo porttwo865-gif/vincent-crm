@@ -40,6 +40,7 @@
     "opportunity": "商机管理",
     "contract": "合同管理",
     "order": "订单管理",
+    "invoice": "发票管理",
     "product": "产品管理",
     "follow": "跟进记录",
     "approval": "审批中心",
