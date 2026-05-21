@@ -1,4 +1,4 @@
-# CordysCRM 产品需求文档（PRD）
+# VincentCRM 产品需求文档（PRD）
 
 > **产品名称**：VincentCRM — AI 驱动的客户关系管理系统  
 > **文档版本**：v1.0  
